@@ -2,17 +2,14 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>슬라이드 확대 가능</title>
   <style>
     html, body {
       margin: 0;
-      padding: 0;
       background: #000;
       overflow: hidden;
       height: 100%;
-      touch-action: manipulation;
     }
 
     .slider {
@@ -26,7 +23,6 @@
       display: flex;
       height: 100%;
       transition: transform 0.5s ease-in-out;
-      will-change: transform;
     }
 
     .slides img {
@@ -34,7 +30,8 @@
       height: 100vh;
       object-fit: contain;
       flex-shrink: 0;
-      touch-action: pinch-zoom;
+      touch-action: none;
+      -ms-touch-action: none;
     }
 
     .buttons {
@@ -72,111 +69,115 @@
   </style>
 </head>
 <body>
-<div class="slider">
-  <div class="slides" id="slides">
-    <img src="금융보안원시안1_24.jpg">
-    <img src="금융보안원시안1_1.jpg">
-    <img src="금융보안원시안1_2.jpg">
-    <img src="금융보안원시안1_3.jpg">
-    <img src="금융보안원시안1_4.jpg">
-    <img src="금융보안원시안1_5.jpg">
-    <img src="금융보안원시안1_6.jpg">
-    <img src="금융보안원시안1_7.jpg">
-    <img src="금융보안원시안1_8.jpg">
-    <img src="금융보안원시안1_9.jpg">
-    <img src="금융보안원시안1_10.jpg">
-    <img src="금융보안원시안1_11.jpg">
-    <img src="금융보안원시안1_12.jpg">
-    <img src="금융보안원시안1_13.jpg">
-    <img src="금융보안원시안1_14.jpg">
-    <img src="금융보안원시안1_15.jpg">
-    <img src="금융보안원시안1_16.jpg">
-    <img src="금융보안원시안1_17.jpg">
-    <img src="금융보안원시안1_18.jpg">
-    <img src="금융보안원시안1_19.jpg">
-    <img src="금융보안원시안1_20.jpg">
-    <img src="금융보안원시안1_21.jpg">
-    <img src="금융보안원시안1_22.jpg">
-    <img src="금융보안원시안1_23.jpg">
-    <img src="금융보안원시안1_24.jpg">
-    <img src="금융보안원시안1_1.jpg">
+  <div class="slider">
+    <div class="slides" id="slides">
+      <!-- 앞쪽 복사 -->
+      <img src="금융보안원시안1_24.jpg" />
+      <!-- 1~24 -->
+      <img src="금융보안원시안1_1.jpg" />
+      <img src="금융보안원시안1_2.jpg" />
+      <img src="금융보안원시안1_3.jpg" />
+      <img src="금융보안원시안1_4.jpg" />
+      <img src="금융보안원시안1_5.jpg" />
+      <img src="금융보안원시안1_6.jpg" />
+      <img src="금융보안원시안1_7.jpg" />
+      <img src="금융보안원시안1_8.jpg" />
+      <img src="금융보안원시안1_9.jpg" />
+      <img src="금융보안원시안1_10.jpg" />
+      <img src="금융보안원시안1_11.jpg" />
+      <img src="금융보안원시안1_12.jpg" />
+      <img src="금융보안원시안1_13.jpg" />
+      <img src="금융보안원시안1_14.jpg" />
+      <img src="금융보안원시안1_15.jpg" />
+      <img src="금융보안원시안1_16.jpg" />
+      <img src="금융보안원시안1_17.jpg" />
+      <img src="금융보안원시안1_18.jpg" />
+      <img src="금융보안원시안1_19.jpg" />
+      <img src="금융보안원시안1_20.jpg" />
+      <img src="금융보안원시안1_21.jpg" />
+      <img src="금융보안원시안1_22.jpg" />
+      <img src="금융보안원시안1_23.jpg" />
+      <img src="금융보안원시안1_24.jpg" />
+      <!-- 뒤쪽 복사 -->
+      <img src="금융보안원시안1_1.jpg" />
+    </div>
+
+    <div class="buttons">
+      <button onclick="prevSlide()">‹</button>
+      <button onclick="nextSlide()">›</button>
+    </div>
+
+    <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
 
-  <div class="buttons">
-    <button onclick="prevSlide()">‹</button>
-    <button onclick="nextSlide()">›</button>
-  </div>
+  <script>
+    const slides = document.getElementById('slides');
+    const total = 24;
+    let current = 1;
+    const indicator = document.getElementById('indicator');
 
-  <div class="page-indicator" id="indicator">1 / 24</div>
-</div>
+    let startX = 0;
+    let startY = 0;
+    let zooming = false;
+    let moved = false;
 
-<script>
-  const slides = document.getElementById('slides');
-  const total = 24;
-  let current = 1;
-  const indicator = document.getElementById('indicator');
-
-  let zoomed = false;
-
-  // 확대 여부 감지
-  document.addEventListener('touchstart', (e) => {
-    if (e.touches.length >= 2) zoomed = true;
-  });
-  document.addEventListener('touchend', (e) => {
-    if (e.touches.length < 2) {
-      // 살짝 딜레이 후 확대 상태 초기화
-      setTimeout(() => {
-        zoomed = false;
-      }, 300);
+    function updateSlide(skip = false) {
+      slides.style.transition = skip ? 'none' : 'transform 0.5s ease-in-out';
+      slides.style.transform = `translateX(-${current * 100}vw)`;
+      const display = current === 0 ? total : (current > total ? 1 : current);
+      indicator.textContent = `${display} / ${total}`;
     }
-  });
 
-  // 터치 슬라이드
-  let startX = 0;
-  slides.addEventListener('touchstart', (e) => {
-    if (zoomed || e.touches.length !== 1) return;
-    startX = e.touches[0].clientX;
-  });
-
-  slides.addEventListener('touchend', (e) => {
-    if (zoomed || e.changedTouches.length !== 1) return;
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) nextSlide();
-    else if (endX - startX > 50) prevSlide();
-  });
-
-  function updateSlide(skipTransition = false) {
-    slides.style.transition = skipTransition ? 'none' : 'transform 0.5s ease-in-out';
-    slides.style.transform = `translateX(-${current * 100}vw)`;
-    const page = current === 0 ? total : current > total ? 1 : current;
-    indicator.textContent = `${page} / ${total}`;
-  }
-
-  function nextSlide() {
-    if (current < total + 1) {
-      current++;
-      updateSlide();
+    function nextSlide() {
+      if (current < total + 1) {
+        current++;
+        updateSlide();
+      }
     }
-  }
 
-  function prevSlide() {
-    if (current > 0) {
-      current--;
-      updateSlide();
+    function prevSlide() {
+      if (current > 0) {
+        current--;
+        updateSlide();
+      }
     }
-  }
 
-  slides.addEventListener('transitionend', () => {
-    if (current === 0) {
-      current = total;
-      updateSlide(true);
-    } else if (current === total + 1) {
-      current = 1;
-      updateSlide(true);
-    }
-  });
+    slides.addEventListener('transitionend', () => {
+      if (current === 0) {
+        current = total;
+        updateSlide(true);
+      } else if (current === total + 1) {
+        current = 1;
+        updateSlide(true);
+      }
+    });
 
-  updateSlide(true);
-</script>
+    slides.addEventListener('touchstart', (e) => {
+      if (e.touches.length >= 2) {
+        zooming = true;
+        return;
+      }
+      zooming = false;
+      moved = false;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    });
+
+    slides.addEventListener('touchmove', (e) => {
+      if (zooming) return;
+      const dx = e.touches[0].clientX - startX;
+      const dy = e.touches[0].clientY - startY;
+      if (Math.abs(dx) > 10 || Math.abs(dy) > 10) moved = true;
+    });
+
+    slides.addEventListener('touchend', (e) => {
+      if (zooming || !moved) return;
+      const endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50) nextSlide();
+      else if (endX - startX > 50) prevSlide();
+    });
+
+    updateSlide(true);
+  </script>
 </body>
 </html>
