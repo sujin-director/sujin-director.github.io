@@ -66,20 +66,6 @@
       font-size: 14px;
       z-index: 10;
     }
-
-    .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      font-size: 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      z-index: 10;
-    }
   </style>
 </head>
 <body>
@@ -118,7 +104,6 @@
     </div>
 
     <div class="page-indicator" id="indicator">1 / 24</div>
-    <button class="close-btn" onclick="document.getElementById('slider').style.display='none'">닫기</button>
   </div>
 
   <script>
@@ -133,17 +118,13 @@
     }
 
     function nextSlide() {
-      if (current < total - 1) {
-        current++;
-        updateSlide();
-      }
+      current = (current + 1) % total;
+      updateSlide();
     }
 
     function prevSlide() {
-      if (current > 0) {
-        current--;
-        updateSlide();
-      }
+      current = (current - 1 + total) % total;
+      updateSlide();
     }
 
     // 터치 슬라이드
