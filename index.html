@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0" />
   <title>슬라이드</title>
   <style>
     body {
@@ -11,25 +11,28 @@
       overflow: hidden;
       touch-action: manipulation;
     }
+
     .slider {
       position: relative;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
     }
+
     .slides {
       display: flex;
-      height: 100%;
       transition: transform 0.5s ease-in-out;
+      height: 100%;
     }
+
     .slides img {
       width: 100vw;
       height: 100vh;
       object-fit: contain;
       flex-shrink: 0;
       touch-action: pinch-zoom;
-      user-select: none;
     }
+
     .buttons {
       position: absolute;
       bottom: 80px;
@@ -39,6 +42,7 @@
       padding: 0 10px;
       z-index: 10;
     }
+
     .buttons button {
       background: rgba(0,0,0,0.5);
       color: white;
@@ -48,6 +52,7 @@
       border-radius: 6px;
       cursor: pointer;
     }
+
     .page-indicator {
       position: absolute;
       bottom: 20px;
@@ -66,6 +71,8 @@
   <div class="slider" id="slider">
     <div class="slides" id="slides">
       <img src="금융보안원시안1_24.jpg" />
+      <!-- 이미지 1~24 -->
+      <!-- 아래 생략 없이 실제 이미지 전부 삽입 -->
       <img src="금융보안원시안1_1.jpg" />
       <img src="금융보안원시안1_2.jpg" />
       <img src="금융보안원시안1_3.jpg" />
@@ -92,38 +99,46 @@
       <img src="금융보안원시안1_24.jpg" />
       <img src="금융보안원시안1_1.jpg" />
     </div>
+
     <div class="buttons">
       <button onclick="prevSlide()">‹</button>
       <button onclick="nextSlide()">›</button>
     </div>
+
     <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
+
   <script>
     const slides = document.getElementById('slides');
-    const indicator = document.getElementById('indicator');
     const total = 24;
     let current = 1;
+    const indicator = document.getElementById('indicator');
+
     let isZooming = false;
     let startX = 0;
     let moved = false;
-    function updateSlide(skip = false) {
-      slides.style.transition = skip ? 'none' : 'transform 0.5s ease-in-out';
+
+    function updateSlide(skipTransition = false) {
+      slides.style.transition = skipTransition ? 'none' : 'transform 0.5s ease-in-out';
       slides.style.transform = `translateX(-${current * 100}vw)`;
-      const page = current === 0 ? total : (current > total ? 1 : current);
-      indicator.textContent = `${page} / ${total}`;
+      const displayPage = current === 0 ? total : (current > total ? 1 : current);
+      indicator.textContent = `${displayPage} / ${total}`;
     }
+
     function nextSlide() {
       if (current < total + 1) {
         current++;
         updateSlide();
       }
     }
+
     function prevSlide() {
       if (current > 0) {
         current--;
         updateSlide();
       }
     }
+
     slides.addEventListener('transitionend', () => {
       if (current === 0) {
         current = total;
@@ -133,36 +148,48 @@
         updateSlide(true);
       }
     });
+
+    // 확대 감지 + 슬라이드 방지
     document.addEventListener('touchstart', (e) => {
       if (e.touches.length >= 2) {
         isZooming = true;
         return;
       }
+
       const container = e.target.closest('.slides');
-      isZooming = container && (container.scrollWidth > window.innerWidth || container.scrollHeight > window.innerHeight);
+      isZooming = container && (
+        container.scrollWidth > window.innerWidth ||
+        container.scrollHeight > window.innerHeight
+      );
+
       if (e.touches.length === 1) {
         startX = e.touches[0].clientX;
         moved = false;
       }
     });
+
     document.addEventListener('touchmove', (e) => {
       if (e.touches.length === 1) {
         const dx = e.touches[0].clientX - startX;
         if (Math.abs(dx) > 10) moved = true;
       }
     });
+
     document.addEventListener('touchend', (e) => {
       if (isZooming || !moved || e.changedTouches.length !== 1) return;
+
       const endX = e.changedTouches[0].clientX;
       const dx = startX - endX;
       if (dx > 50) nextSlide();
       else if (dx < -50) prevSlide();
     });
-    document.addEventListener('touchend', (e) => {
-      if (e.touches.length < 2) {
-        setTimeout(() => { isZooming = false }, 300);
-      }
+
+    document.addEventListener('touchend', () => {
+      setTimeout(() => {
+        isZooming = false;
+      }, 300);
     });
+
     updateSlide(true);
   </script>
 </body>
