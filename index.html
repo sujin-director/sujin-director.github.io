@@ -3,175 +3,165 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>금융보안원 교육 슬라이드</title>
+  <title>슬라이더</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body, html {
+    html, body {
+      margin: 0;
+      padding: 0;
       height: 100%;
       background: #000;
-      font-family: sans-serif;
       overflow: hidden;
     }
+
     .slider {
       position: relative;
       width: 100vw;
-      max-width: 480px;
       height: 100vh;
+      max-width: 480px;
       margin: 0 auto;
       overflow: hidden;
       background: #000;
     }
+
     .slides {
       display: flex;
-      transition: transform 0.4s ease-in-out;
       height: 100%;
+      transition: transform 0.4s ease-in-out;
+      touch-action: pan-y;
     }
+
     .slides img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       flex-shrink: 0;
+      touch-action: pinch-zoom;
     }
+
     .buttons {
       position: absolute;
       top: 50%;
       width: 100%;
       display: flex;
       justify-content: space-between;
-      padding: 0 10px;
       transform: translateY(-50%);
+      padding: 0 10px;
+      box-sizing: border-box;
       pointer-events: none;
     }
+
     .buttons button {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.4);
       color: white;
       border: none;
       font-size: 24px;
-      padding: 6px 10px;
+      padding: 4px 12px;
       border-radius: 6px;
       cursor: pointer;
-      pointer-events: all;
+      pointer-events: auto;
     }
-    .page-number {
+
+    .counter {
       position: absolute;
       bottom: 10px;
       left: 50%;
       transform: translateX(-50%);
       color: white;
-      font-size: 16px;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.4);
       padding: 4px 10px;
       border-radius: 10px;
+      font-size: 14px;
     }
-    .call-links {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: none;
-      pointer-events: none;
-    }
-    .call-link {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60%;
-      height: 40px;
-      pointer-events: all;
-    }
-    .call-link:nth-child(1) { top: 300px; }
-    .call-link:nth-child(2) { top: 380px; }
-    .call-link:nth-child(3) { top: 460px; }
   </style>
 </head>
 <body>
-
-<div class="slider">
-  <div class="slides" id="slides">
-    <img src="금융보안원시안1_1.jpg" alt="슬라이드1">
-    <img src="금융보안원시안1_2.jpg" alt="슬라이드2">
-    <img src="금융보안원시안1_3.jpg" alt="슬라이드3">
-    <img src="금융보안원시안1_4.jpg" alt="슬라이드4">
-    <img src="금융보안원시안1_5.jpg" alt="슬라이드5">
-    <img src="금융보안원시안1_6.jpg" alt="슬라이드6">
-    <img src="금융보안원시안1_7.jpg" alt="슬라이드7">
-    <img src="금융보안원시안1_8.jpg" alt="슬라이드8">
-    <img src="금융보안원시안1_9.jpg" alt="슬라이드9">
-    <img src="금융보안원시안1_10.jpg" alt="슬라이드10">
-    <img src="금융보안원시안1_11.jpg" alt="슬라이드11">
-    <img src="금융보안원시안1_12.jpg" alt="슬라이드12">
-    <img src="금융보안원시안1_13.jpg" alt="슬라이드13">
-    <img src="금융보안원시안1_14.jpg" alt="슬라이드14">
-    <img src="금융보안원시안1_15.jpg" alt="슬라이드15">
-    <img src="금융보안원시안1_16.jpg" alt="슬라이드16">
-    <img src="금융보안원시안1_17.jpg" alt="슬라이드17">
-    <img src="금융보안원시안1_18.jpg" alt="슬라이드18">
-    <img src="금융보안원시안1_19.jpg" alt="슬라이드19">
-    <img src="금융보안원시안1_20.jpg" alt="슬라이드20">
-    <img src="금융보안원시안1_21.jpg" alt="슬라이드21">
-    <img src="금융보안원시안1_22.jpg" alt="슬라이드22">
-    <img src="금융보안원시안1_23.jpg" alt="슬라이드23">
-    <img src="금융보안원시안1_24.jpg" alt="슬라이드24">
+  <div class="slider" id="slider">
+    <div class="slides" id="slides">
+      <!-- 이미지 파일명에 맞게 수정 -->
+      <img src="금융보안원시안1_1.jpg" alt="1">
+      <img src="금융보안원시안1_2.jpg" alt="2">
+      <img src="금융보안원시안1_3.jpg" alt="3">
+      <img src="금융보안원시안1_4.jpg" alt="4">
+      <img src="금융보안원시안1_5.jpg" alt="5">
+      <img src="금융보안원시안1_6.jpg" alt="6">
+      <img src="금융보안원시안1_7.jpg" alt="7">
+      <img src="금융보안원시안1_8.jpg" alt="8">
+      <img src="금융보안원시안1_9.jpg" alt="9">
+      <img src="금융보안원시안1_10.jpg" alt="10">
+      <img src="금융보안원시안1_11.jpg" alt="11"> <!-- 링크 제거됨 -->
+      <img src="금융보안원시안1_12.jpg" alt="12">
+      <img src="금융보안원시안1_13.jpg" alt="13">
+      <img src="금융보안원시안1_14.jpg" alt="14">
+      <img src="금융보안원시안1_15.jpg" alt="15">
+      <img src="금융보안원시안1_16.jpg" alt="16">
+      <img src="금융보안원시안1_17.jpg" alt="17">
+      <img src="금융보안원시안1_18.jpg" alt="18">
+      <img src="금융보안원시안1_19.jpg" alt="19">
+      <img src="금융보안원시안1_20.jpg" alt="20">
+      <img src="금융보안원시안1_21.jpg" alt="21">
+      <img src="금융보안원시안1_22.jpg" alt="22">
+      <img src="금융보안원시안1_23.jpg" alt="23">
+      <img src="금융보안원시안1_24.jpg" alt="24">
+    </div>
+    <div class="buttons">
+      <button onclick="prevSlide()">‹</button>
+      <button onclick="nextSlide()">›</button>
+    </div>
+    <div class="counter" id="counter">1 / 24</div>
   </div>
 
-  <!-- 전화 터치 영역: 11번째 슬라이드에서만 표시됨 -->
-  <div class="call-links" id="call-links">
-    <a href="tel:01042082616" class="call-link"></a>
-    <a href="tel:01088511541" class="call-link"></a>
-    <a href="tel:01089917845" class="call-link"></a>
-  </div>
+  <script>
+    const slides = document.getElementById('slides');
+    const total = slides.children.length;
+    const counter = document.getElementById('counter');
+    let current = 0;
 
-  <!-- 이전/다음 버튼 -->
-  <div class="buttons">
-    <button onclick="prevSlide()">‹</button>
-    <button onclick="nextSlide()">›</button>
-  </div>
-
-  <!-- 페이지 번호 -->
-  <div class="page-number" id="page-number">1 / 24</div>
-</div>
-
-<script>
-  const slides = document.getElementById('slides');
-  const pageNum = document.getElementById('page-number');
-  const callLinks = document.getElementById('call-links');
-  const total = slides.children.length;
-  let current = 0;
-  let startX = 0;
-
-  function updateSlide() {
-    slides.style.transform = `translateX(-${current * 100}%)`;
-    pageNum.textContent = `${current + 1} / ${total}`;
-    callLinks.style.display = (current === 10) ? 'block' : 'none'; // 11번째 슬라이드만
-  }
-
-  function nextSlide() {
-    current = (current + 1) % total;
-    updateSlide();
-  }
-
-  function prevSlide() {
-    current = (current - 1 + total) % total;
-    updateSlide();
-  }
-
-  // 터치 이동 기능
-  slides.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-  });
-
-  slides.addEventListener("touchend", (e) => {
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) {
-      nextSlide();
-    } else if (endX - startX > 50) {
-      prevSlide();
+    function updateSlide() {
+      slides.style.transform = `translateX(-${current * 100}%)`;
+      counter.textContent = `${current + 1} / ${total}`;
     }
-  });
 
-  updateSlide(); // 초기 설정
-</script>
+    function nextSlide() {
+      current = (current + 1) % total;
+      updateSlide();
+    }
 
+    function prevSlide() {
+      current = (current - 1 + total) % total;
+      updateSlide();
+    }
+
+    updateSlide();
+
+    // 터치 슬라이드 제어
+    let startX = 0;
+    let isDragging = false;
+    const threshold = 50;
+
+    slides.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+      }
+    });
+
+    slides.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+    });
+
+    slides.addEventListener('touchend', (e) => {
+      if (!isDragging) return;
+      const endX = e.changedTouches[0].clientX;
+      const deltaX = endX - startX;
+
+      if (deltaX > threshold) {
+        prevSlide();
+      } else if (deltaX < -threshold) {
+        nextSlide();
+      }
+
+      isDragging = false;
+    });
+  </script>
 </body>
 </html>
