@@ -94,12 +94,30 @@
     <button class="close-button" onclick="window.close()">닫기</button>
 
     <div class="slides" id="slides">
-      <!-- 이미지 1~24장 -->
-      <!-- 파일명 변경 가능 -->
-      <!-- 11번 연락처 링크 제거된 버전 -->
-      ${[...Array(24)].map((_, i) =>
-        `<img src="금융보안원시안1_${i + 1}.jpg" alt="${i + 1}">`
-      ).join('')}
+      <img src="금융보안원시안1_1.jpg" />
+      <img src="금융보안원시안1_2.jpg" />
+      <img src="금융보안원시안1_3.jpg" />
+      <img src="금융보안원시안1_4.jpg" />
+      <img src="금융보안원시안1_5.jpg" />
+      <img src="금융보안원시안1_6.jpg" />
+      <img src="금융보안원시안1_7.jpg" />
+      <img src="금융보안원시안1_8.jpg" />
+      <img src="금융보안원시안1_9.jpg" />
+      <img src="금융보안원시안1_10.jpg" />
+      <img src="금융보안원시안1_11.jpg" />
+      <img src="금융보안원시안1_12.jpg" />
+      <img src="금융보안원시안1_13.jpg" />
+      <img src="금융보안원시안1_14.jpg" />
+      <img src="금융보안원시안1_15.jpg" />
+      <img src="금융보안원시안1_16.jpg" />
+      <img src="금융보안원시안1_17.jpg" />
+      <img src="금융보안원시안1_18.jpg" />
+      <img src="금융보안원시안1_19.jpg" />
+      <img src="금융보안원시안1_20.jpg" />
+      <img src="금융보안원시안1_21.jpg" />
+      <img src="금융보안원시안1_22.jpg" />
+      <img src="금융보안원시안1_23.jpg" />
+      <img src="금융보안원시안1_24.jpg" />
     </div>
 
     <div class="buttons">
@@ -115,7 +133,6 @@
     const counter = document.getElementById('counter');
     let current = 0;
     let isZooming = false;
-    let scale = 1;
 
     function updateSlide() {
       slides.style.transform = `translateX(-${current * 100}%)`;
@@ -136,7 +153,6 @@
 
     updateSlide();
 
-    // 터치 이벤트로 슬라이드
     let startX = 0;
     let isDragging = false;
     const threshold = 50;
@@ -145,18 +161,16 @@
       if (e.touches.length === 1) {
         startX = e.touches[0].clientX;
         isDragging = true;
-      } else if (e.touches.length > 1) {
+        isZooming = false;
+      } else {
         isZooming = true;
       }
     });
 
     slides.addEventListener('touchend', (e) => {
-      if (isZooming) {
-        isZooming = false;
-        return;
-      }
-
+      if (isZooming) return;
       if (!isDragging) return;
+
       const endX = e.changedTouches[0].clientX;
       const deltaX = endX - startX;
 
