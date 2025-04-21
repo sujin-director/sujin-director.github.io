@@ -28,7 +28,7 @@
     .slides img {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* 여백 없이 꽉 채우기 */
+      object-fit: cover;
       flex-shrink: 0;
     }
     .buttons {
@@ -49,30 +49,63 @@
       border-radius: 8px;
       cursor: pointer;
     }
+    .counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      background: rgba(0,0,0,0.5);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
   <div class="slider" id="slider">
     <div class="slides" id="slides">
-      <!-- 이미지 삽입 예시 (24장 다 추가하세요) -->
       <img src="금융보안원시안1_1.jpg" alt="슬라이드1" />
       <img src="금융보안원시안1_2.jpg" alt="슬라이드2" />
-      <!-- ... -->
+      <img src="금융보안원시안1_3.jpg" alt="슬라이드3" />
+      <img src="금융보안원시안1_4.jpg" alt="슬라이드4" />
+      <img src="금융보안원시안1_5.jpg" alt="슬라이드5" />
+      <img src="금융보안원시안1_6.jpg" alt="슬라이드6" />
+      <img src="금융보안원시안1_7.jpg" alt="슬라이드7" />
+      <img src="금융보안원시안1_8.jpg" alt="슬라이드8" />
+      <img src="금융보안원시안1_9.jpg" alt="슬라이드9" />
+      <img src="금융보안원시안1_10.jpg" alt="슬라이드10" />
+      <img src="금융보안원시안1_11.jpg" alt="슬라이드11" />
+      <img src="금융보안원시안1_12.jpg" alt="슬라이드12" />
+      <img src="금융보안원시안1_13.jpg" alt="슬라이드13" />
+      <img src="금융보안원시안1_14.jpg" alt="슬라이드14" />
+      <img src="금융보안원시안1_15.jpg" alt="슬라이드15" />
+      <img src="금융보안원시안1_16.jpg" alt="슬라이드16" />
+      <img src="금융보안원시안1_17.jpg" alt="슬라이드17" />
+      <img src="금융보안원시안1_18.jpg" alt="슬라이드18" />
+      <img src="금융보안원시안1_19.jpg" alt="슬라이드19" />
+      <img src="금융보안원시안1_20.jpg" alt="슬라이드20" />
+      <img src="금융보안원시안1_21.jpg" alt="슬라이드21" />
+      <img src="금융보안원시안1_22.jpg" alt="슬라이드22" />
+      <img src="금융보안원시안1_23.jpg" alt="슬라이드23" />
       <img src="금융보안원시안1_24.jpg" alt="슬라이드24" />
     </div>
     <div class="buttons">
       <button onclick="prevSlide()">‹</button>
       <button onclick="nextSlide()">›</button>
     </div>
+    <div class="counter" id="counter">1 / 24</div>
   </div>
 
   <script>
     let current = 0;
     const slides = document.getElementById('slides');
     const total = slides.children.length;
+    const counter = document.getElementById('counter');
 
     function updateSlide() {
       slides.style.transform = `translateX(-${current * 100}%)`;
+      counter.textContent = `${current + 1} / ${total}`;
     }
 
     function nextSlide() {
@@ -87,7 +120,7 @@
 
     updateSlide();
 
-    // 모바일 터치 이벤트 추가
+    // 터치 슬라이드 구현
     let startX = 0;
     let endX = 0;
     const slider = document.getElementById('slider');
@@ -98,8 +131,8 @@
 
     slider.addEventListener('touchend', e => {
       endX = e.changedTouches[0].clientX;
-      if (startX - endX > 50) nextSlide();      // 왼쪽으로 넘김
-      else if (endX - startX > 50) prevSlide(); // 오른쪽으로 넘김
+      if (startX - endX > 50) nextSlide();
+      else if (endX - startX > 50) prevSlide();
     });
   </script>
 </body>
