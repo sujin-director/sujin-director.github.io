@@ -23,6 +23,7 @@
       display: flex;
       transition: transform 0.5s ease-in-out;
       height: 100%;
+      touch-action: none;
     }
 
     .slides img {
@@ -30,16 +31,15 @@
       height: 100vh;
       object-fit: contain;
       flex-shrink: 0;
-      touch-action: none;
+      touch-action: pinch-zoom;
     }
 
     .buttons {
       position: absolute;
-      top: 50%;
+      bottom: 60px;
       width: 100%;
       display: flex;
       justify-content: space-between;
-      transform: translateY(-50%);
       padding: 0 10px;
       z-index: 10;
     }
@@ -61,9 +61,9 @@
       transform: translateX(-50%);
       color: white;
       background: rgba(0, 0, 0, 0.5);
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: 10px;
-      font-size: 14px;
+      font-size: 12.6px; /* 원래 14px의 10% 축소 */
       z-index: 10;
     }
   </style>
@@ -71,10 +71,10 @@
 <body>
   <div class="slider" id="slider">
     <div class="slides" id="slides">
-      <!-- 마지막 페이지 복사본 (앞에) -->
+      <!-- 앞쪽 복사 -->
       <img src="금융보안원시안1_24.jpg" />
       
-      <!-- 실제 이미지 1~24 -->
+      <!-- 실제 이미지 -->
       <img src="금융보안원시안1_1.jpg" />
       <img src="금융보안원시안1_2.jpg" />
       <img src="금융보안원시안1_3.jpg" />
@@ -99,8 +99,7 @@
       <img src="금융보안원시안1_22.jpg" />
       <img src="금융보안원시안1_23.jpg" />
       <img src="금융보안원시안1_24.jpg" />
-
-      <!-- 첫 번째 페이지 복사본 (뒤에) -->
+      <!-- 뒤쪽 복사 -->
       <img src="금융보안원시안1_1.jpg" />
     </div>
 
@@ -117,6 +116,19 @@
     const total = 24;
     let current = 1;
     const indicator = document.getElementById('indicator');
+
+    let isZoomed = false;
+
+    // 확대 상태 감지용 (2손가락 터치 체크)
+    let activeTouches = 0;
+    document.body.addEventListener('touchstart', (e) => {
+      activeTouches = e.touches.length;
+      isZoomed = activeTouches >= 2;
+    });
+    document.body.addEventListener('touchend', (e) => {
+      activeTouches = e.touches.length;
+      if (activeTouches < 2) isZoomed = false;
+    });
 
     function updateSlide(skipTransition = false) {
       if (skipTransition) {
@@ -151,13 +163,15 @@
       }
     });
 
-    // 터치 슬라이드
+    // 터치로 슬라이드 넘기기 (확대 중엔 안 넘김)
     let startX = 0;
     slides.addEventListener('touchstart', (e) => {
+      if (isZoomed) return;
       startX = e.touches[0].clientX;
     });
 
     slides.addEventListener('touchend', (e) => {
+      if (isZoomed) return;
       const endX = e.changedTouches[0].clientX;
       if (startX - endX > 50) nextSlide();
       else if (endX - startX > 50) prevSlide();
