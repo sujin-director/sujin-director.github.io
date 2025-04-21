@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1, maximum-scale=5">
-  <title>확대 가능한 슬라이드</title>
+        content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>슬라이드 확대</title>
   <style>
     html, body {
       margin: 0;
-      padding: 0;
       background: #000;
       overflow: hidden;
       height: 100%;
+      touch-action: manipulation;
     }
 
     .slider {
@@ -23,9 +23,8 @@
 
     .slides {
       display: flex;
-      transition: transform 0.4s ease-in-out;
       height: 100%;
-      will-change: transform;
+      transition: transform 0.5s ease-in-out;
     }
 
     .zoom-container {
@@ -37,10 +36,11 @@
 
     .zoom-container img {
       width: 100%;
-      height: 100%;
+      height: auto;
       object-fit: contain;
       pointer-events: none;
       user-select: none;
+      touch-action: none;
     }
 
     .buttons {
@@ -78,94 +78,91 @@
   </style>
 </head>
 <body>
-<div class="slider">
-  <div class="slides" id="slides">
-    <!-- 반복 이미지 예시 (앞 복사본) -->
-    <div class="zoom-container"><img src="금융보안원시안1_24.jpg" /></div>
+  <div class="slider">
+    <div class="slides" id="slides"></div>
 
-    <!-- 실제 이미지들 -->
-    <div class="zoom-container"><img src="금융보안원시안1_1.jpg" /></div>
-    <div class="zoom-container"><img src="금융보안원시안1_2.jpg" /></div>
-    <div class="zoom-container"><img src="금융보안원시안1_3.jpg" /></div>
-    <div class="zoom-container"><img src="금융보안원시안1_4.jpg" /></div>
-    <div class="zoom-container"><img src="금융보안원시안1_5.jpg" /></div>
-    <div class="zoom-container"><img src="금융보안원시안1_6.jpg" /></div>
-    <div class="zoom-container"><img src="금융보안원시안1_7.jpg" /></div>
-    <div class="zoom-container"><img src="금융보안원시안1_8.jpg" /></div>
-    <div class="zoom-container"><img src="금융보안원시안1_9.jpg" /></div>
-    <div class="zoom-container"><img src="금융보안원시안1_10.jpg" /></div>
+    <div class="buttons">
+      <button onclick="prevSlide()">‹</button>
+      <button onclick="nextSlide()">›</button>
+    </div>
 
-    <!-- 마지막 복사본 -->
-    <div class="zoom-container"><img src="금융보안원시안1_1.jpg" /></div>
+    <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
 
-  <div class="buttons">
-    <button onclick="prevSlide()">‹</button>
-    <button onclick="nextSlide()">›</button>
-  </div>
+  <script>
+    const slides = document.getElementById('slides');
+    const indicator = document.getElementById('indicator');
+    const total = 24;
+    let current = 1;
 
-  <div class="page-indicator" id="indicator">1 / 10</div>
-</div>
+    // 슬라이드 이미지 자동 생성
+    const makeSlide = (name) => {
+      const container = document.createElement('div');
+      container.className = 'zoom-container';
+      const img = document.createElement('img');
+      img.src = name;
+      container.appendChild(img);
+      return container;
+    };
 
-<script>
-  const slides = document.getElementById('slides');
-  const total = 10;
-  let current = 1;
-  const indicator = document.getElementById('indicator');
-
-  function updateSlide(skip = false) {
-    slides.style.transition = skip ? 'none' : 'transform 0.4s ease-in-out';
-    slides.style.transform = `translateX(-${current * 100}vw)`;
-    const display = current === 0 ? total : (current > total ? 1 : current);
-    indicator.textContent = `${display} / ${total}`;
-  }
-
-  function nextSlide() {
-    if (current < total + 1) {
-      current++;
-      updateSlide();
+    // 앞/뒤 복사 이미지
+    slides.appendChild(makeSlide('금융보안원시안1_24.jpg'));
+    for (let i = 1; i <= 24; i++) {
+      slides.appendChild(makeSlide(`금융보안원시안1_${i}.jpg`));
     }
-  }
+    slides.appendChild(makeSlide('금융보안원시안1_1.jpg'));
 
-  function prevSlide() {
-    if (current > 0) {
-      current--;
-      updateSlide();
+    function updateSlide(skip = false) {
+      slides.style.transition = skip ? 'none' : 'transform 0.5s ease-in-out';
+      slides.style.transform = `translateX(-${current * 100}vw)`;
+      const page = current === 0 ? total : (current > total ? 1 : current);
+      indicator.textContent = `${page} / ${total}`;
     }
-  }
 
-  slides.addEventListener('transitionend', () => {
-    if (current === 0) {
-      current = total;
-      updateSlide(true);
-    } else if (current === total + 1) {
-      current = 1;
-      updateSlide(true);
+    function nextSlide() {
+      if (current < total + 1) {
+        current++;
+        updateSlide();
+      }
     }
-  });
 
-  // 터치 제어
-  let startX = 0;
-  let scrollBlocked = false;
-
-  slides.addEventListener('touchstart', (e) => {
-    if (e.target.closest('.zoom-container')?.scrollWidth > window.innerWidth ||
-        e.target.closest('.zoom-container')?.scrollHeight > window.innerHeight) {
-      scrollBlocked = true;
-    } else {
-      scrollBlocked = false;
-      startX = e.touches[0].clientX;
+    function prevSlide() {
+      if (current > 0) {
+        current--;
+        updateSlide();
+      }
     }
-  });
 
-  slides.addEventListener('touchend', (e) => {
-    if (scrollBlocked) return;
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) nextSlide();
-    else if (endX - startX > 50) prevSlide();
-  });
+    slides.addEventListener('transitionend', () => {
+      if (current === 0) {
+        current = total;
+        updateSlide(true);
+      } else if (current === total + 1) {
+        current = 1;
+        updateSlide(true);
+      }
+    });
 
-  updateSlide(true);
-</script>
+    // 터치 제어
+    let startX = 0;
+    let isZoomed = false;
+
+    slides.addEventListener('touchstart', (e) => {
+      const container = e.target.closest('.zoom-container');
+      isZoomed = container.scrollWidth > window.innerWidth || container.scrollHeight > window.innerHeight;
+      if (e.touches.length === 1 && !isZoomed) {
+        startX = e.touches[0].clientX;
+      }
+    });
+
+    slides.addEventListener('touchend', (e) => {
+      if (isZoomed || e.changedTouches.length !== 1) return;
+      const endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50) nextSlide();
+      else if (endX - startX > 50) prevSlide();
+    });
+
+    updateSlide(true);
+  </script>
 </body>
 </html>
