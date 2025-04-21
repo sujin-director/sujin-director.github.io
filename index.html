@@ -2,38 +2,37 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-  <title>슬라이드 보기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>슬라이드</title>
   <style>
     body {
       margin: 0;
       background: #000;
       overflow: hidden;
-      font-family: sans-serif;
     }
-    #slideshow-container {
-      position: fixed;
-      top: 0;
-      left: 0;
+
+    .slider {
+      position: relative;
       width: 100vw;
       height: 100vh;
-      background: #000;
-      z-index: 1000;
-    }
-    .slides {
-      display: flex;
-      width: 100%;
-      height: 100%;
       overflow: hidden;
       touch-action: pan-y pinch-zoom;
     }
+
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      height: 100%;
+    }
+
     .slides img {
       width: 100vw;
       height: 100vh;
       object-fit: contain;
       flex-shrink: 0;
-      transition: transform 0.3s ease;
+      touch-action: none;
     }
+
     .buttons {
       position: absolute;
       top: 50%;
@@ -42,83 +41,84 @@
       justify-content: space-between;
       transform: translateY(-50%);
       padding: 0 10px;
-      box-sizing: border-box;
-      z-index: 2;
+      z-index: 10;
     }
+
     .buttons button {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0,0,0,0.5);
       color: white;
       border: none;
       font-size: 24px;
-      padding: 4px 10px;
+      padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
     }
+
     .page-indicator {
       position: absolute;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       color: white;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 4px 12px;
-      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 4px 10px;
+      border-radius: 10px;
       font-size: 14px;
-      z-index: 2;
+      z-index: 10;
     }
+
     .close-btn {
       position: absolute;
       top: 20px;
       right: 20px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.2);
       color: white;
-      font-size: 20px;
       border: none;
       padding: 6px 12px;
-      border-radius: 8px;
+      font-size: 14px;
+      border-radius: 6px;
       cursor: pointer;
-      z-index: 2;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
-  <div id="slideshow-container">
+  <div class="slider" id="slider">
     <div class="slides" id="slides">
-      <!-- 이미지 슬라이드 -->
-      <!-- 파일명은 실제 이미지 경로와 맞춰주세요 -->
-      <!-- 24장의 이미지 추가 -->
-      <!-- 예시 -->
-      <img src="금융보안원시안1_1.jpg" alt="1">
-      <img src="금융보안원시안1_2.jpg" alt="2">
-      <img src="금융보안원시안1_3.jpg" alt="3">
-      <img src="금융보안원시안1_4.jpg" alt="4">
-      <img src="금융보안원시안1_5.jpg" alt="5">
-      <img src="금융보안원시안1_6.jpg" alt="6">
-      <img src="금융보안원시안1_7.jpg" alt="7">
-      <img src="금융보안원시안1_8.jpg" alt="8">
-      <img src="금융보안원시안1_9.jpg" alt="9">
-      <img src="금융보안원시안1_10.jpg" alt="10">
-      <img src="금융보안원시안1_11.jpg" alt="11">
-      <img src="금융보안원시안1_12.jpg" alt="12">
-      <img src="금융보안원시안1_13.jpg" alt="13">
-      <img src="금융보안원시안1_14.jpg" alt="14">
-      <img src="금융보안원시안1_15.jpg" alt="15">
-      <img src="금융보안원시안1_16.jpg" alt="16">
-      <img src="금융보안원시안1_17.jpg" alt="17">
-      <img src="금융보안원시안1_18.jpg" alt="18">
-      <img src="금융보안원시안1_19.jpg" alt="19">
-      <img src="금융보안원시안1_20.jpg" alt="20">
-      <img src="금융보안원시안1_21.jpg" alt="21">
-      <img src="금융보안원시안1_22.jpg" alt="22">
-      <img src="금융보안원시안1_23.jpg" alt="23">
-      <img src="금융보안원시안1_24.jpg" alt="24">
+      <!-- 이미지 24장 -->
+      <img src="금융보안원시안1_1.jpg" />
+      <img src="금융보안원시안1_2.jpg" />
+      <img src="금융보안원시안1_3.jpg" />
+      <img src="금융보안원시안1_4.jpg" />
+      <img src="금융보안원시안1_5.jpg" />
+      <img src="금융보안원시안1_6.jpg" />
+      <img src="금융보안원시안1_7.jpg" />
+      <img src="금융보안원시안1_8.jpg" />
+      <img src="금융보안원시안1_9.jpg" />
+      <img src="금융보안원시안1_10.jpg" />
+      <img src="금융보안원시안1_11.jpg" />
+      <img src="금융보안원시안1_12.jpg" />
+      <img src="금융보안원시안1_13.jpg" />
+      <img src="금융보안원시안1_14.jpg" />
+      <img src="금융보안원시안1_15.jpg" />
+      <img src="금융보안원시안1_16.jpg" />
+      <img src="금융보안원시안1_17.jpg" />
+      <img src="금융보안원시안1_18.jpg" />
+      <img src="금융보안원시안1_19.jpg" />
+      <img src="금융보안원시안1_20.jpg" />
+      <img src="금융보안원시안1_21.jpg" />
+      <img src="금융보안원시안1_22.jpg" />
+      <img src="금융보안원시안1_23.jpg" />
+      <img src="금융보안원시안1_24.jpg" />
     </div>
+
     <div class="buttons">
       <button onclick="prevSlide()">‹</button>
       <button onclick="nextSlide()">›</button>
     </div>
+
     <div class="page-indicator" id="indicator">1 / 24</div>
-    <button class="close-btn" onclick="closeSlideshow()">닫기</button>
+    <button class="close-btn" onclick="document.getElementById('slider').style.display='none'">닫기</button>
   </div>
 
   <script>
@@ -146,10 +146,6 @@
       }
     }
 
-    function closeSlideshow() {
-      document.getElementById('slideshow-container').style.display = 'none';
-    }
-
     // 터치 슬라이드
     let startX = 0;
     slides.addEventListener('touchstart', (e) => {
@@ -159,10 +155,9 @@
     slides.addEventListener('touchend', (e) => {
       const endX = e.changedTouches[0].clientX;
       if (startX - endX > 50) nextSlide();
-      if (endX - startX > 50) prevSlide();
+      else if (endX - startX > 50) prevSlide();
     });
 
-    // 핀치 줌 허용을 위한 기본 설정 유지
     updateSlide();
   </script>
 </body>
