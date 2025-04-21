@@ -11,13 +11,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       height: 100vh;
     }
     .slider {
       position: relative;
       width: 100vw;
       max-width: 480px;
-      height: 100vh;
+      height: 90vh;
       overflow: hidden;
     }
     .slides {
@@ -60,11 +61,27 @@
       border-radius: 8px;
       font-size: 16px;
     }
+    .goto {
+      margin-top: 10px;
+      color: white;
+    }
+    .goto input {
+      width: 60px;
+      padding: 5px;
+      font-size: 16px;
+    }
+    .goto button {
+      padding: 5px 10px;
+      font-size: 16px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <div class="slider" id="slider">
     <div class="slides" id="slides">
+      <!-- 이미지 24장 -->
       <img src="금융보안원시안1_1.jpg" alt="슬라이드1" />
       <img src="금융보안원시안1_2.jpg" alt="슬라이드2" />
       <img src="금융보안원시안1_3.jpg" alt="슬라이드3" />
@@ -97,6 +114,12 @@
     <div class="counter" id="counter">1 / 24</div>
   </div>
 
+  <div class="goto">
+    <label>페이지 이동: </label>
+    <input type="number" id="pageInput" min="1" max="24" />
+    <button onclick="goToPage()">이동</button>
+  </div>
+
   <script>
     let current = 0;
     const slides = document.getElementById('slides');
@@ -118,9 +141,20 @@
       updateSlide();
     }
 
+    function goToPage() {
+      const input = document.getElementById('pageInput').value;
+      const page = parseInt(input);
+      if (!isNaN(page) && page >= 1 && page <= total) {
+        current = page - 1;
+        updateSlide();
+      } else {
+        alert(`1부터 ${total} 사이의 숫자를 입력해주세요.`);
+      }
+    }
+
     updateSlide();
 
-    // 터치 슬라이드 구현
+    // 터치 슬라이드
     let startX = 0;
     let endX = 0;
     const slider = document.getElementById('slider');
