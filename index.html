@@ -11,28 +11,25 @@
       overflow: hidden;
       touch-action: manipulation;
     }
-
     .slider {
       position: relative;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
     }
-
     .slides {
       display: flex;
-      transition: transform 0.5s ease-in-out;
       height: 100%;
+      transition: transform 0.5s ease-in-out;
     }
-
     .slides img {
       width: 100vw;
       height: 100vh;
       object-fit: contain;
       flex-shrink: 0;
       touch-action: pinch-zoom;
+      user-select: none;
     }
-
     .buttons {
       position: absolute;
       bottom: 80px;
@@ -42,7 +39,6 @@
       padding: 0 10px;
       z-index: 10;
     }
-
     .buttons button {
       background: rgba(0,0,0,0.5);
       color: white;
@@ -52,7 +48,6 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
     .page-indicator {
       position: absolute;
       bottom: 20px;
@@ -71,8 +66,6 @@
   <div class="slider" id="slider">
     <div class="slides" id="slides">
       <img src="금융보안원시안1_24.jpg" />
-      <!-- 이미지 1~24 -->
-      <!-- 아래 생략 없이 실제 이미지 전부 삽입 -->
       <img src="금융보안원시안1_1.jpg" />
       <img src="금융보안원시안1_2.jpg" />
       <img src="금융보안원시안1_3.jpg" />
@@ -99,15 +92,12 @@
       <img src="금융보안원시안1_24.jpg" />
       <img src="금융보안원시안1_1.jpg" />
     </div>
-
     <div class="buttons">
       <button onclick="prevSlide()">‹</button>
       <button onclick="nextSlide()">›</button>
     </div>
-
     <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
-
   <script>
     const slides = document.getElementById('slides');
     const total = 24;
@@ -149,23 +139,16 @@
       }
     });
 
-    // 확대 감지 + 슬라이드 방지
+    // 터치 이벤트: 확대 상태에선 슬라이드 안 됨, 어디든 터치 가능하게 document에 적용
     document.addEventListener('touchstart', (e) => {
       if (e.touches.length >= 2) {
         isZooming = true;
         return;
       }
 
-      const container = e.target.closest('.slides');
-      isZooming = container && (
-        container.scrollWidth > window.innerWidth ||
-        container.scrollHeight > window.innerHeight
-      );
-
-      if (e.touches.length === 1) {
-        startX = e.touches[0].clientX;
-        moved = false;
-      }
+      isZooming = false;
+      startX = e.touches[0].clientX;
+      moved = false;
     });
 
     document.addEventListener('touchmove', (e) => {
@@ -177,17 +160,10 @@
 
     document.addEventListener('touchend', (e) => {
       if (isZooming || !moved || e.changedTouches.length !== 1) return;
-
       const endX = e.changedTouches[0].clientX;
       const dx = startX - endX;
       if (dx > 50) nextSlide();
       else if (dx < -50) prevSlide();
-    });
-
-    document.addEventListener('touchend', () => {
-      setTimeout(() => {
-        isZooming = false;
-      }, 300);
     });
 
     updateSlide(true);
