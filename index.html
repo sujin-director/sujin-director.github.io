@@ -15,18 +15,20 @@
     }
     .slider {
       position: relative;
-      width: 90vw;
+      width: 100vw;
       max-width: 480px;
+      height: 100vh;
       overflow: hidden;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
     }
     .slides {
       display: flex;
       transition: transform 0.5s ease-in-out;
+      height: 100%;
     }
     .slides img {
       width: 100%;
+      height: 100%;
+      object-fit: contain;
       flex-shrink: 0;
     }
     .buttons {
@@ -82,7 +84,7 @@
       updateSlide();
     }
 
-    setInterval(nextSlide, 4000); // 자동 슬라이드 (4초마다)
+    updateSlide(); // 초기 슬라이드 위치 설정
   </script>
 </body>
 </html>
