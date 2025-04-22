@@ -9,54 +9,41 @@
       margin: 0;
       background: #000;
       overflow: hidden;
-      touch-action: manipulation;
+      touch-action: none;
     }
+
     .slider {
       position: relative;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
     }
+
     .slides {
       display: flex;
-      height: 100%;
       transition: transform 0.5s ease-in-out;
+      height: 100%;
     }
-    .slides .slide-container {
+
+    .slides img {
       width: 100vw;
       height: 100vh;
-      overflow: hidden;
+      object-fit: contain;
+      flex-shrink: 0;
       touch-action: none;
     }
-    .zoom-wrapper {
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      touch-action: pinch-zoom;
-      -webkit-overflow-scrolling: touch;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .zoom-wrapper img {
-      width: auto;
-      height: auto;
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      user-select: none;
-      touch-action: pinch-zoom;
-      display: block;
-    }
+
     .buttons {
       position: absolute;
-      bottom: 80px;
+      top: 50%;
       width: 100%;
       display: flex;
       justify-content: space-between;
+      transform: translateY(-50%);
       padding: 0 10px;
       z-index: 10;
     }
+
     .buttons button {
       background: rgba(0,0,0,0.5);
       color: white;
@@ -66,6 +53,7 @@
       border-radius: 6px;
       cursor: pointer;
     }
+
     .page-indicator {
       position: absolute;
       bottom: 20px;
@@ -75,7 +63,7 @@
       background: rgba(0, 0, 0, 0.5);
       padding: 4px 10px;
       border-radius: 10px;
-      font-size: 12.6px;
+      font-size: 14px;
       z-index: 10;
     }
   </style>
@@ -83,32 +71,37 @@
 <body>
   <div class="slider" id="slider">
     <div class="slides" id="slides">
-      <!-- 이미지 슬라이드 1~24 + 복사본 1개 -->
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_1.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_2.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_3.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_4.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_5.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_6.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_7.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_8.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_9.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_10.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_11.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_12.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_13.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_14.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_15.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_16.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_17.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_18.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_19.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_20.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_21.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_22.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_23.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_24.jpg" /></div></div>
-      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_1.jpg" /></div></div>
+      <!-- 마지막 페이지 복사본 (앞에) -->
+      <img src="금융보안원시안1_24.jpg" />
+      
+      <!-- 실제 이미지 1~24 -->
+      <img src="금융보안원시안1_1.jpg" />
+      <img src="금융보안원시안1_2.jpg" />
+      <img src="금융보안원시안1_3.jpg" />
+      <img src="금융보안원시안1_4.jpg" />
+      <img src="금융보안원시안1_5.jpg" />
+      <img src="금융보안원시안1_6.jpg" />
+      <img src="금융보안원시안1_7.jpg" />
+      <img src="금융보안원시안1_8.jpg" />
+      <img src="금융보안원시안1_9.jpg" />
+      <img src="금융보안원시안1_10.jpg" />
+      <img src="금융보안원시안1_11.jpg" />
+      <img src="금융보안원시안1_12.jpg" />
+      <img src="금융보안원시안1_13.jpg" />
+      <img src="금융보안원시안1_14.jpg" />
+      <img src="금융보안원시안1_15.jpg" />
+      <img src="금융보안원시안1_16.jpg" />
+      <img src="금융보안원시안1_17.jpg" />
+      <img src="금융보안원시안1_18.jpg" />
+      <img src="금융보안원시안1_19.jpg" />
+      <img src="금융보안원시안1_20.jpg" />
+      <img src="금융보안원시안1_21.jpg" />
+      <img src="금융보안원시안1_22.jpg" />
+      <img src="금융보안원시안1_23.jpg" />
+      <img src="금융보안원시안1_24.jpg" />
+
+      <!-- 첫 번째 페이지 복사본 (뒤에) -->
+      <img src="금융보안원시안1_1.jpg" />
     </div>
 
     <div class="buttons">
@@ -125,29 +118,27 @@
     let current = 1;
     const indicator = document.getElementById('indicator');
 
-    let isZooming = false;
-    let startX = 0;
-    let moved = false;
-
     function updateSlide(skipTransition = false) {
-      slides.style.transition = skipTransition ? 'none' : 'transform 0.5s ease-in-out';
+      if (skipTransition) {
+        slides.style.transition = 'none';
+      } else {
+        slides.style.transition = 'transform 0.5s ease-in-out';
+      }
       slides.style.transform = `translateX(-${current * 100}vw)`;
       const displayPage = current === 0 ? total : (current > total ? 1 : current);
       indicator.textContent = `${displayPage} / ${total}`;
     }
 
     function nextSlide() {
-      if (current < total + 1) {
-        current++;
-        updateSlide();
-      }
+      if (current >= total + 1) return;
+      current++;
+      updateSlide();
     }
 
     function prevSlide() {
-      if (current > 0) {
-        current--;
-        updateSlide();
-      }
+      if (current <= 0) return;
+      current--;
+      updateSlide();
     }
 
     slides.addEventListener('transitionend', () => {
@@ -160,29 +151,16 @@
       }
     });
 
-    document.addEventListener('touchstart', (e) => {
-      if (e.touches.length >= 2) {
-        isZooming = true;
-        return;
-      }
-      isZooming = false;
+    // 터치 슬라이드
+    let startX = 0;
+    slides.addEventListener('touchstart', (e) => {
       startX = e.touches[0].clientX;
-      moved = false;
     });
 
-    document.addEventListener('touchmove', (e) => {
-      if (e.touches.length === 1) {
-        const dx = e.touches[0].clientX - startX;
-        if (Math.abs(dx) > 10) moved = true;
-      }
-    });
-
-    document.addEventListener('touchend', (e) => {
-      if (isZooming || !moved || e.changedTouches.length !== 1) return;
+    slides.addEventListener('touchend', (e) => {
       const endX = e.changedTouches[0].clientX;
-      const dx = startX - endX;
-      if (dx > 50) nextSlide();
-      else if (dx < -50) prevSlide();
+      if (startX - endX > 50) nextSlide();
+      else if (endX - startX > 50) prevSlide();
     });
 
     updateSlide(true);
