@@ -79,9 +79,50 @@
       font-size: 12.6px;
       z-index: 10;
     }
+    .menu-toggle {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 20;
+      font-size: 26px;
+      color: white;
+      cursor: pointer;
+      background: rgba(0,0,0,0.5);
+      border-radius: 6px;
+      padding: 4px 10px;
+    }
+    .toc-menu {
+      position: fixed;
+      top: 50px;
+      left: 12px;
+      z-index: 20;
+      background: rgba(0,0,0,0.8);
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .toc-menu button {
+      background: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
+  <!-- 햄버거 메뉴 & 목차 -->
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  <div class="toc-menu" id="tocMenu">
+    <button onclick="goToSlide(3)">1. 교육 일정</button>
+    <button onclick="goToSlide(6)">2. 교육생 명단</button>
+    <button onclick="goToSlide(11)">3. 교육생 소개</button>
+  </div>
+
   <div class="slider" id="slider">
     <div class="slides" id="slides">
       <div class="slide-wrapper"><img src="금융보안원시안1_24.jpg" /></div>
@@ -149,6 +190,17 @@
         current--;
         updateSlide();
       }
+    }
+
+    function goToSlide(num) {
+      current = num;
+      updateSlide();
+      document.getElementById('tocMenu').style.display = 'none';
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('tocMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
     slides.addEventListener('transitionend', () => {
