@@ -102,6 +102,8 @@
       display: none;
       flex-direction: column;
       gap: 8px;
+      max-height: 80vh;
+      overflow-y: auto;
     }
     .toc-menu input {
       margin-bottom: 8px;
@@ -125,13 +127,22 @@
   <div class="menu-toggle" onclick="toggleMenu()">☰</div>
   <div class="toc-menu" id="tocMenu">
     <input type="text" id="searchBox" oninput="filterMenu()" placeholder="이름 검색" />
+    <div id="staticMenu">
+      <button onclick="goToSlide(3)">1. 교육 일정</button>
+      <button onclick="goToSlide(6)">2. 교육생 명단</button>
+      <button onclick="goToSlide(11)">3. 교육생 소개</button>
+    </div>
     <div id="searchResults"></div>
   </div>
 
   <div class="slider" id="slider">
     <div class="slides" id="slides">
-      <!-- 슬라이드들 -->
+      <!-- 이미지 26장 복원 -->
+      " + Array.from({length: 24}, (_, i) => `<div class='slide-wrapper'><img src='금융보안원시안1_${(i + 1)}.jpg' /></div>`).join('') + "
+      <div class='slide-wrapper'><img src='금융보안원시안1_24.jpg' /></div>
+      <div class='slide-wrapper'><img src='금융보안원시안1_1.jpg' /></div>
     </div>
+
     <div class="buttons">
       <button onclick="prevSlide()">‹</button>
       <button onclick="nextSlide()">›</button>
@@ -196,6 +207,9 @@
       else if (current === total + 1) { current = 1; updateSlide(true); }
     });
 
+    let isZooming = false;
+    let startX = 0;
+    let moved = false;
     document.addEventListener('touchstart', (e) => {
       if (e.touches.length >= 2) { isZooming = true; return; }
       isZooming = false;
