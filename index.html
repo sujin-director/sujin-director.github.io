@@ -2,51 +2,61 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0">
-  <title>슬라이드 확대 가능</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>슬라이드</title>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
       background: #000;
       overflow: hidden;
-      height: 100%;
       touch-action: manipulation;
     }
-
     .slider {
       position: relative;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
     }
-
     .slides {
       display: flex;
       height: 100%;
       transition: transform 0.5s ease-in-out;
-      will-change: transform;
     }
-
-    .slides img {
+    .slides .slide-container {
       width: 100vw;
       height: 100vh;
-      object-fit: contain;
-      flex-shrink: 0;
-      touch-action: pinch-zoom;
+      overflow: hidden;
+      touch-action: none;
     }
-
+    .zoom-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      touch-action: pinch-zoom;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .zoom-wrapper img {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      user-select: none;
+      touch-action: pinch-zoom;
+      display: block;
+    }
     .buttons {
       position: absolute;
-      bottom: 60px;
+      bottom: 80px;
       width: 100%;
       display: flex;
       justify-content: space-between;
       padding: 0 10px;
       z-index: 10;
     }
-
     .buttons button {
       background: rgba(0,0,0,0.5);
       color: white;
@@ -56,7 +66,6 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
     .page-indicator {
       position: absolute;
       bottom: 20px;
@@ -64,7 +73,7 @@
       transform: translateX(-50%);
       color: white;
       background: rgba(0, 0, 0, 0.5);
-      padding: 3px 8px;
+      padding: 4px 10px;
       border-radius: 10px;
       font-size: 12.6px;
       z-index: 10;
@@ -72,111 +81,88 @@
   </style>
 </head>
 <body>
-<div class="slider">
-  <div class="slides" id="slides">
-    <img src="금융보안원시안1_24.jpg">
-    <img src="금융보안원시안1_1.jpg">
-    <img src="금융보안원시안1_2.jpg">
-    <img src="금융보안원시안1_3.jpg">
-    <img src="금융보안원시안1_4.jpg">
-    <img src="금융보안원시안1_5.jpg">
-    <img src="금융보안원시안1_6.jpg">
-    <img src="금융보안원시안1_7.jpg">
-    <img src="금융보안원시안1_8.jpg">
-    <img src="금융보안원시안1_9.jpg">
-    <img src="금융보안원시안1_10.jpg">
-    <img src="금융보안원시안1_11.jpg">
-    <img src="금융보안원시안1_12.jpg">
-    <img src="금융보안원시안1_13.jpg">
-    <img src="금융보안원시안1_14.jpg">
-    <img src="금융보안원시안1_15.jpg">
-    <img src="금융보안원시안1_16.jpg">
-    <img src="금융보안원시안1_17.jpg">
-    <img src="금융보안원시안1_18.jpg">
-    <img src="금융보안원시안1_19.jpg">
-    <img src="금융보안원시안1_20.jpg">
-    <img src="금융보안원시안1_21.jpg">
-    <img src="금융보안원시안1_22.jpg">
-    <img src="금융보안원시안1_23.jpg">
-    <img src="금융보안원시안1_24.jpg">
-    <img src="금융보안원시안1_1.jpg">
+  <div class="slider" id="slider">
+    <div class="slides" id="slides">
+      <!-- 이미지 슬라이드 1~24 + 복사본 1개 -->
+      " + Array.from({ length: 24 }, (_, i) => `<div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_${i + 1}.jpg" /></div></div>`).join('') + "
+      <div class="slide-container"><div class="zoom-wrapper"><img src="금융보안원시안1_1.jpg" /></div></div>
+    </div>
+
+    <div class="buttons">
+      <button onclick="prevSlide()">‹</button>
+      <button onclick="nextSlide()">›</button>
+    </div>
+
+    <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
 
-  <div class="buttons">
-    <button onclick="prevSlide()">‹</button>
-    <button onclick="nextSlide()">›</button>
-  </div>
+  <script>
+    const slides = document.getElementById('slides');
+    const total = 24;
+    let current = 1;
+    const indicator = document.getElementById('indicator');
 
-  <div class="page-indicator" id="indicator">1 / 24</div>
-</div>
+    let isZooming = false;
+    let startX = 0;
+    let moved = false;
 
-<script>
-  const slides = document.getElementById('slides');
-  const total = 24;
-  let current = 1;
-  const indicator = document.getElementById('indicator');
-
-  let zoomed = false;
-
-  // 확대 여부 감지
-  document.addEventListener('touchstart', (e) => {
-    if (e.touches.length >= 2) zoomed = true;
-  });
-  document.addEventListener('touchend', (e) => {
-    if (e.touches.length < 2) {
-      // 살짝 딜레이 후 확대 상태 초기화
-      setTimeout(() => {
-        zoomed = false;
-      }, 300);
+    function updateSlide(skipTransition = false) {
+      slides.style.transition = skipTransition ? 'none' : 'transform 0.5s ease-in-out';
+      slides.style.transform = `translateX(-${current * 100}vw)`;
+      const displayPage = current === 0 ? total : (current > total ? 1 : current);
+      indicator.textContent = `${displayPage} / ${total}`;
     }
-  });
 
-  // 터치 슬라이드
-  let startX = 0;
-  slides.addEventListener('touchstart', (e) => {
-    if (zoomed || e.touches.length !== 1) return;
-    startX = e.touches[0].clientX;
-  });
-
-  slides.addEventListener('touchend', (e) => {
-    if (zoomed || e.changedTouches.length !== 1) return;
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) nextSlide();
-    else if (endX - startX > 50) prevSlide();
-  });
-
-  function updateSlide(skipTransition = false) {
-    slides.style.transition = skipTransition ? 'none' : 'transform 0.5s ease-in-out';
-    slides.style.transform = `translateX(-${current * 100}vw)`;
-    const page = current === 0 ? total : current > total ? 1 : current;
-    indicator.textContent = `${page} / ${total}`;
-  }
-
-  function nextSlide() {
-    if (current < total + 1) {
-      current++;
-      updateSlide();
+    function nextSlide() {
+      if (current < total + 1) {
+        current++;
+        updateSlide();
+      }
     }
-  }
 
-  function prevSlide() {
-    if (current > 0) {
-      current--;
-      updateSlide();
+    function prevSlide() {
+      if (current > 0) {
+        current--;
+        updateSlide();
+      }
     }
-  }
 
-  slides.addEventListener('transitionend', () => {
-    if (current === 0) {
-      current = total;
-      updateSlide(true);
-    } else if (current === total + 1) {
-      current = 1;
-      updateSlide(true);
-    }
-  });
+    slides.addEventListener('transitionend', () => {
+      if (current === 0) {
+        current = total;
+        updateSlide(true);
+      } else if (current === total + 1) {
+        current = 1;
+        updateSlide(true);
+      }
+    });
 
-  updateSlide(true);
-</script>
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length >= 2) {
+        isZooming = true;
+        return;
+      }
+      isZooming = false;
+      startX = e.touches[0].clientX;
+      moved = false;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 1) {
+        const dx = e.touches[0].clientX - startX;
+        if (Math.abs(dx) > 10) moved = true;
+      }
+    });
+
+    document.addEventListener('touchend', (e) => {
+      if (isZooming || !moved || e.changedTouches.length !== 1) return;
+      const endX = e.changedTouches[0].clientX;
+      const dx = startX - endX;
+      if (dx > 50) nextSlide();
+      else if (dx < -50) prevSlide();
+    });
+
+    updateSlide(true);
+  </script>
 </body>
 </html>
