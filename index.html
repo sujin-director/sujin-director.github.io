@@ -325,20 +325,29 @@
   }
 
   // 터치 슬라이드
-  let startX = 0;
-  let isTouching = false;
-  slides.addEventListener('touchstart', e => {
-    isTouching = true;
-    startX = e.touches[0].clientX;
-  });
+  // 터치 슬라이드 (네이버 앱 대응 - passive: false 추가)
+let startX = 0;
+let isTouching = false;
 
-  slides.addEventListener('touchend', e => {
-    if (!isTouching) return;
-    const endX = e.changedTouches[0].clientX;
-    const diff = startX - endX;
-    if (diff > 50) nextSlide();
-    else if (diff < -50) prevSlide();
-    isTouching = false;
+slides.addEventListener('touchstart', e => {
+  isTouching = true;
+  startX = e.touches[0].clientX;
+}, { passive: false });
+
+slides.addEventListener('touchmove', e => {
+  // 네이버 앱에서 터치 무시되지 않도록 preventDefault 추가
+  if (isTouching) e.preventDefault();
+}, { passive: false });
+
+slides.addEventListener('touchend', e => {
+  if (!isTouching) return;
+  const endX = e.changedTouches[0].clientX;
+  const diff = startX - endX;
+  if (diff > 50) nextSlide();
+  else if (diff < -50) prevSlide();
+  isTouching = false;
+}, { passive: false });
+
   });
 
   // 사이드바 외부 클릭 시 닫기
