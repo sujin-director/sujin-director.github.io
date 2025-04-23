@@ -192,7 +192,7 @@
     <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
 
-  <script>
+   <script>
     const slides = document.getElementById('slides');
     const total = 24;
     let current = 1;
@@ -221,21 +221,9 @@
       indicator.textContent = `${current} / ${total}`;
     }
 
-    function nextSlide() {
-      current++;
-      updateSlide();
-    }
-
-    function prevSlide() {
-      current--;
-      updateSlide();
-    }
-
-    function goToSlide(num) {
-      current = num;
-      updateSlide();
-      toggleSidebar(false);
-    }
+    function nextSlide() { current++; updateSlide(); }
+    function prevSlide() { current--; updateSlide(); }
+    function goToSlide(num) { current = num; updateSlide(); toggleSidebar(false); }
 
     function toggleSidebar(forceClose = undefined) {
       const sidebar = document.getElementById('sidebar');
@@ -250,9 +238,7 @@
 
     function goToInputPage() {
       const val = parseInt(document.getElementById('pageInput').value);
-      if (val >= 1 && val <= total) {
-        goToSlide(val);
-      }
+      if (val >= 1 && val <= total) goToSlide(val);
     }
 
     function filterMenu() {
@@ -280,26 +266,26 @@
       alert("홈 링크가 복사되었습니다.");
     }
 
-    // 터치 슬라이드
+    // 터치 슬라이드 - 네이버 인앱 대응
+    const slider = document.querySelector('.slider');
     let startX = 0;
     let isTouching = false;
-
-    slides.addEventListener('touchstart', e => {
+    slider.addEventListener('touchstart', e => {
       if (e.touches.length > 1) return;
       isTouching = true;
       startX = e.touches[0].clientX;
-    });
+    }, { passive: false });
 
-    slides.addEventListener('touchend', e => {
+    slider.addEventListener('touchend', e => {
       if (!isTouching) return;
       const endX = e.changedTouches[0].clientX;
       const diff = startX - endX;
-      if (diff > 40) nextSlide();
-      else if (diff < -40) prevSlide();
+      if (diff > 50) nextSlide();
+      else if (diff < -50) prevSlide();
       isTouching = false;
-    });
+    }, { passive: false });
 
-    // 외부 클릭 시 사이드바 닫기
+    // 사이드바 외부 클릭 시 닫기
     document.addEventListener('click', function (e) {
       const sidebar = document.getElementById('sidebar');
       const toggleBtn = document.querySelector('.menu-toggle');
@@ -311,6 +297,6 @@
     });
 
     updateSlide();
-  </script>
+</script>
 </body>
 </html>
