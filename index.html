@@ -1,3 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2025년 제9기 최고위과정 원우수첩</title>
+  <meta name="description" content="링크를 눌러 9기 교육생의 프로필을 확인해보세요.">
+  <meta property="og:title" content="2025년 제9기 최고위과정 원우수첩">
+  <meta property="og:description" content="링크를 눌러 9기 교육생의 프로필을 확인해보세요.">
+  <meta property="og:image" content="https://sujin-director.github.io/thumbnail.jpg">
+  <meta property="og:url" content="https://sujin-director.github.io/">
+  <meta property="og:type" content="website">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+      background-color: #fff;
+      color: #000;
+      touch-action: manipulation;
+    }
+
+    .slider {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      height: 100%;
+    }
+
+    .slide-wrapper {
+      flex-shrink: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: white;
+    }
+
+    .slide-wrapper img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .buttons {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+      z-index: 10;
+    }
+
+    .buttons button {
+      background: rgba(0,0,0,0.3);
+      color: white;
+      border: none;
+      font-size: 24px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .page-indicator {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 4px 10px;
+      border-radius: 10px;
+      color: white;
+      font-size: 12px;
+      z-index: 10;
+    }
+
     .menu-toggle {
       position: fixed;
       top: 12px;
@@ -12,13 +99,13 @@
 
     .sidebar {
       position: fixed;
-      top: 0;
+      top: 52px;
       left: 0;
-      height: 100%;
+      height: calc(100% - 52px);
       width: 280px;
       background: #fff;
       box-shadow: 4px 0 12px rgba(0,0,0,0.1);
-      padding: 60px 20px 20px 20px;
+      padding: 20px;
       display: none;
       flex-direction: column;
       z-index: 25;
@@ -32,16 +119,8 @@
     .sidebar h3 {
       font-size: 16px;
       font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       color: #111;
-      border-left: none;
-    }
-
-    .sidebar h3 span {
-      font-weight: normal;
-      font-size: 16px;
+      margin-bottom: 8px;
     }
 
     .sidebar button {
@@ -64,13 +143,6 @@
       width: calc(100% - 32px);
       border-radius: 4px;
       border: 1px solid #ccc;
-      display: inline-block;
-    }
-
-    .sidebar a {
-      text-decoration: none;
-      color: #2196F3;
-      font-weight: bold;
     }
 
     .go-btn {
@@ -79,13 +151,19 @@
       height: 24px;
       font-size: 16px;
       text-align: center;
-      background: #16c60c;
+      background: #16cc60;
       color: white;
       border-radius: 4px;
       line-height: 24px;
       margin-left: 4px;
       cursor: pointer;
       vertical-align: middle;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #2196F3;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -101,24 +179,25 @@
     </div>
 
     <div class="section">
-      <h3>| 이름 검색 <span>🔍</span></h3>
+      <h3>| 이름 검색 🔍</h3>
       <input type="text" id="searchBox" placeholder="이름 입력" oninput="filterMenu()" />
       <div id="searchResults"></div>
     </div>
 
     <div class="section">
-      <h3>| 페이지 이동</h3>
+      <h3>| 페이지 이동 📄</h3>
       <div style="display: flex; align-items: center;">
         <input type="number" id="pageInput" placeholder="페이지 번호 입력" min="1" max="24" />
-        <span class="go-btn" onclick="goToInputPage()">✅</span>
+        <div class="go-btn" onclick="goToInputPage()">✅</div>
       </div>
     </div>
 
     <div class="section">
-      <h3>| 공유하기</h3>
+      <h3>| 공유하기 🔗</h3>
       <button onclick="copyBaseURL()">홈 링크 복사</button>
     </div>
   </div>
+
   <div class="slider">
     <div class="slides" id="slides">
       <div class="slide-wrapper"><img src="금융보안원시안1_1.jpg" /></div>
@@ -230,32 +309,21 @@
     }
   }
 
-  function copyCurrentURL() {
-    const url = `${window.location.origin}${window.location.pathname}?v=${current}`;
-    navigator.clipboard.writeText(url);
-    alert("현재 페이지 링크가 복사되었습니다.");
-  }
-
   function copyBaseURL() {
     navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
     alert("홈 링크가 복사되었습니다.");
   }
 
-  // ✅ 페이지 입력 체크 아이콘으로 이동
-  document.getElementById('pageInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') goToInputPage();
-  });
-  document.getElementById('pageCheckBtn').addEventListener('click', goToInputPage);
-
-  // 터치 이동 (네이버 인앱 브라우저 포함)
+  // 터치 슬라이드 (네이버 앱 호환)
   let startX = 0;
   let isTouching = false;
-  document.addEventListener('touchstart', e => {
+
+  slides.addEventListener('touchstart', e => {
     isTouching = true;
     startX = e.touches[0].clientX;
   });
 
-  document.addEventListener('touchend', e => {
+  slides.addEventListener('touchend', e => {
     if (!isTouching) return;
     const endX = e.changedTouches[0].clientX;
     const diff = startX - endX;
@@ -264,7 +332,7 @@
     isTouching = false;
   });
 
-  // 사이드바 외부 클릭 시 닫기
+  // 사이드바 외부 클릭 시 자동 닫힘
   document.addEventListener('click', function (e) {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.querySelector('.menu-toggle');
@@ -277,3 +345,5 @@
 
   updateSlide();
 </script>
+</body>
+</html>
