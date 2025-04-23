@@ -6,7 +6,7 @@
   <title>2025년 제9기 최고위과정 원우수첩</title>
   <meta name="description" content="링크를 눌러 9기 교육생의 프로필을 확인해보세요.">
 
-  <!-- ✅ SNS 미리보기 설정 (카카오톡, 페이스북 등) -->
+  <!-- SNS 미리보기 -->
   <meta property="og:title" content="2025년 제9기 금융보안 최고위과정 원우수첩" />
   <meta property="og:description" content="9기 교육생의 프로필을 지금 확인해보세요!" />
   <meta property="og:image" content="thumbnail.jpg" />
@@ -90,7 +90,7 @@
       position: fixed;
       top: 12px;
       left: 12px;
-      font-size: 31px; /* ⬅️ 10% 확대 */
+      font-size: 31px;
       background: transparent;
       color: #333;
       z-index: 30;
@@ -100,7 +100,7 @@
 
     .home-button {
       position: fixed;
-      top: 18px; /* ✅ 5% 아래로 */
+      top: 18px;
       right: 12px;
       background: transparent;
       border: none;
@@ -121,7 +121,7 @@
       width: 280px;
       background: #fff;
       box-shadow: 4px 0 12px rgba(0,0,0,0.1);
-      padding: 80px 20px 20px; /* ✅ 목차 아래로 충분히 떨어뜨림 */
+      padding: 80px 20px 20px;
       display: none;
       flex-direction: column;
       z-index: 25;
@@ -163,7 +163,7 @@
     .sidebar input {
       margin: 6px 0 8px;
       padding: 8px;
-      width: calc(100% - 36px); /* ✅ 우측에 아이콘 공간 확보 */
+      width: calc(100% - 36px);
       border-radius: 4px;
       border: 1px solid #ccc;
     }
@@ -182,6 +182,7 @@
       cursor: pointer;
       vertical-align: middle;
     }
+
     .sidebar a {
       text-decoration: none;
       color: #2196F3;
@@ -232,30 +233,10 @@
 
   <div class="slider">
     <div class="slides" id="slides">
-      <div class="slide-wrapper"><img src="금융보안원시안1_1.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_2.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_3.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_4.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_5.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_6.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_7.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_8.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_9.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_10.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_11.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_12.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_13.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_14.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_15.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_16.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_17.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_18.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_19.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_20.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_21.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_22.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_23.jpg" /></div>
-      <div class="slide-wrapper"><img src="금융보안원시안1_24.jpg" /></div>
+      <!-- 이미지 1~24 -->
+      ${[...Array(24).keys()].map(i =>
+        `<div class="slide-wrapper"><img src="금융보안원시안1_${i + 1}.jpg" /></div>`
+      ).join('\n')}
     </div>
 
     <div class="buttons">
@@ -264,121 +245,123 @@
     </div>
     <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
-<script>
-  const slides = document.getElementById('slides');
-  const total = 24;
-  let current = 1;
-  const indicator = document.getElementById('indicator');
 
-  const searchIndex = {
-    '강호석': [6, 11], '고재술': [6, 11], '권윤정': [6, 11],
-    '김경주': [6, 12], '김동혁': [6, 12], '김은희': [6, 12],
-    '김정아': [6, 13], '김정원': [6, 13], '김종원': [6, 13],
-    '박병삼': [6, 14], '박영수': [7, 14], '배진석': [7, 14],
-    '서홍원': [7, 15], '손영환': [7, 15], '송영신': [7, 15],
-    '신용철': [7, 16], '심성용': [7, 16], '오상원': [7, 16],
-    '오중효': [7, 17], '윤찬식': [7, 17], '윤태진': [8, 17],
-    '이동준': [8, 18], '이상운': [8, 18], '이주호': [8, 18],
-    '이현아': [8, 19], '장경운': [8, 19], '장만우': [8, 19],
-    '장세원': [8, 20], '전우영': [8, 20], '정기영': [8, 20],
-    '정병석': [9, 21], '정수용': [9, 21], '정용준': [9, 21],
-    '정태영': [9, 22], '정혁주': [9, 22], '현정훈': [9, 22],
-    '황성식': [9, 23], '황의자': [9, 23]
-  };
+  <script>
+    const slides = document.getElementById('slides');
+    const total = 24;
+    let current = 1;
+    const indicator = document.getElementById('indicator');
 
-  function updateSlide() {
-    if (current < 1) current = total;
-    if (current > total) current = 1;
-    slides.style.transition = 'transform 0.5s ease-in-out';
-    slides.style.transform = `translateX(-${(current - 1) * 100}vw)`;
-    indicator.textContent = `${current} / ${total}`;
-  }
+    const searchIndex = {
+      '강호석': [6, 11], '고재술': [6, 11], '권윤정': [6, 11],
+      '김경주': [6, 12], '김동혁': [6, 12], '김은희': [6, 12],
+      '김정아': [6, 13], '김정원': [6, 13], '김종원': [6, 13],
+      '박병삼': [6, 14], '박영수': [7, 14], '배진석': [7, 14],
+      '서홍원': [7, 15], '손영환': [7, 15], '송영신': [7, 15],
+      '신용철': [7, 16], '심성용': [7, 16], '오상원': [7, 16],
+      '오중효': [7, 17], '윤찬식': [7, 17], '윤태진': [8, 17],
+      '이동준': [8, 18], '이상운': [8, 18], '이주호': [8, 18],
+      '이현아': [8, 19], '장경운': [8, 19], '장만우': [8, 19],
+      '장세원': [8, 20], '전우영': [8, 20], '정기영': [8, 20],
+      '정병석': [9, 21], '정수용': [9, 21], '정용준': [9, 21],
+      '정태영': [9, 22], '정혁주': [9, 22], '현정훈': [9, 22],
+      '황성식': [9, 23], '황의자': [9, 23]
+    };
 
-  function nextSlide() {
-    current++;
+    function updateSlide() {
+      if (current < 1) current = total;
+      if (current > total) current = 1;
+      slides.style.transition = 'transform 0.5s ease-in-out';
+      slides.style.transform = `translateX(-${(current - 1) * 100}vw)`;
+      indicator.textContent = `${current} / ${total}`;
+    }
+
+    function nextSlide() {
+      current++;
+      updateSlide();
+    }
+
+    function prevSlide() {
+      current--;
+      updateSlide();
+    }
+
+    function goToSlide(num) {
+      current = num;
+      updateSlide();
+      toggleSidebar(false);
+    }
+
+    function goToInputPage() {
+      const val = parseInt(document.getElementById('pageInput').value);
+      if (val >= 1 && val <= total) {
+        goToSlide(val);
+      }
+    }
+
+    function toggleSidebar(forceClose = undefined) {
+      const sidebar = document.getElementById('sidebar');
+      if (forceClose === false || sidebar.style.display === 'flex') {
+        sidebar.style.display = 'none';
+      } else {
+        sidebar.style.display = 'flex';
+        document.getElementById('searchBox').value = '';
+        document.getElementById('searchResults').innerHTML = '';
+      }
+    }
+
+    function filterMenu() {
+      const input = document.getElementById('searchBox').value.trim();
+      const results = document.getElementById('searchResults');
+      results.innerHTML = '';
+      if (input && searchIndex[input]) {
+        searchIndex[input].forEach(slideNum => {
+          const btn = document.createElement('button');
+          btn.innerText = `${input} - ${slideNum}p 이동`;
+          btn.onclick = () => goToSlide(slideNum);
+          results.appendChild(btn);
+        });
+      }
+    }
+
+    function copyBaseURL() {
+      navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
+      alert("홈 링크가 복사되었습니다.");
+    }
+
+    // ✅ 확대 중일 때는 터치 슬라이드 막기
+    let startX = 0;
+    let isTouching = false;
+    document.addEventListener('touchstart', e => {
+      if (e.target.closest('.slides')) {
+        const zoomed = document.documentElement.clientWidth < window.innerWidth;
+        if (zoomed) return;
+        isTouching = true;
+        startX = e.touches[0].clientX;
+      }
+    });
+
+    document.addEventListener('touchend', e => {
+      if (!isTouching) return;
+      const endX = e.changedTouches[0].clientX;
+      const diff = startX - endX;
+      if (diff > 50) nextSlide();
+      else if (diff < -50) prevSlide();
+      isTouching = false;
+    });
+
+    // 사이드바 외부 클릭 시 닫기
+    document.addEventListener('click', function (e) {
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.querySelector('.menu-toggle');
+      if (sidebar.style.display === 'flex' &&
+          !sidebar.contains(e.target) &&
+          !toggleBtn.contains(e.target)) {
+        sidebar.style.display = 'none';
+      }
+    });
+
     updateSlide();
-  }
-
-  function prevSlide() {
-    current--;
-    updateSlide();
-  }
-
-  function goToSlide(num) {
-    current = num;
-    updateSlide();
-    toggleSidebar(false);
-  }
-
-  function goToInputPage() {
-    const val = parseInt(document.getElementById('pageInput').value);
-    if (val >= 1 && val <= total) {
-      goToSlide(val);
-    }
-  }
-
-  function toggleSidebar(forceClose = undefined) {
-    const sidebar = document.getElementById('sidebar');
-    if (forceClose === false || sidebar.style.display === 'flex') {
-      sidebar.style.display = 'none';
-    } else {
-      sidebar.style.display = 'flex';
-      document.getElementById('searchBox').value = '';
-      document.getElementById('searchResults').innerHTML = '';
-    }
-  }
-
-  function filterMenu() {
-    const input = document.getElementById('searchBox').value.trim();
-    const results = document.getElementById('searchResults');
-    results.innerHTML = '';
-    if (input && searchIndex[input]) {
-      searchIndex[input].forEach(slideNum => {
-        const btn = document.createElement('button');
-        btn.innerText = `${input} - ${slideNum}p 이동`;
-        btn.onclick = () => goToSlide(slideNum);
-        results.appendChild(btn);
-      });
-    }
-  }
-
-  function copyBaseURL() {
-    navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
-    alert("홈 링크가 복사되었습니다.");
-  }
-
-  // 터치 슬라이드 (네이버 대응)
-  let startX = 0;
-  let isTouching = false;
-
-  document.addEventListener('touchstart', e => {
-    if (e.target.closest('.slides')) {
-      isTouching = true;
-      startX = e.touches[0].clientX;
-    }
-  });
-
-  document.addEventListener('touchend', e => {
-    if (!isTouching) return;
-    const endX = e.changedTouches[0].clientX;
-    const diff = startX - endX;
-    if (diff > 50) nextSlide();
-    else if (diff < -50) prevSlide();
-    isTouching = false;
-  });
-
-  // 사이드바 외부 클릭 시 닫기
-  document.addEventListener('click', function (e) {
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.querySelector('.menu-toggle');
-    if (sidebar.style.display === 'flex' &&
-        !sidebar.contains(e.target) &&
-        !toggleBtn.contains(e.target)) {
-      sidebar.style.display = 'none';
-    }
-  });
-
-  updateSlide();
-</script>
+  </script>
 </body>
 </html>
