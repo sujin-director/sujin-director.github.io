@@ -83,13 +83,13 @@
     }
     .sidebar {
       position: fixed;
-      top: 52px;
+      top: 0;
       left: 0;
-      height: calc(100% - 52px);
+      height: 100%;
       width: 280px;
       background: #fff;
       box-shadow: 4px 0 12px rgba(0,0,0,0.1);
-      padding: 20px;
+      padding: 64px 20px 20px;
       display: none;
       flex-direction: column;
       z-index: 25;
@@ -105,6 +105,7 @@
       justify-content: space-between;
       align-items: center;
       color: #111;
+      border-left: none;
     }
     .sidebar h3 span {
       font-weight: normal;
@@ -123,7 +124,7 @@
       cursor: pointer;
     }
     .sidebar input {
-      margin: 6px 0 8px;
+      margin: 6px 0 0;
       padding: 8px;
       width: 100%;
       border-radius: 4px;
@@ -147,12 +148,10 @@
     </div>
     <div class="section">
       <h3>| 페이지 이동 <span>📄</span></h3>
-      <input type="number" id="pageInput" placeholder="페이지 번호" min="1" max="24" />
-      <button onclick="goToInputPage()">이동</button>
+      <input type="number" id="pageInput" placeholder="페이지 번호 입력" min="1" max="24" />
     </div>
     <div class="section">
       <h3>| 공유하기 <span>🔗</span></h3>
-      <button onclick="copyCurrentURL()">현재 페이지 링크 복사</button>
       <button onclick="copyBaseURL()">홈 링크 복사</button>
     </div>
   </div>
@@ -192,7 +191,7 @@
     <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
 
-   <script>
+  <script>
     const slides = document.getElementById('slides');
     const total = 24;
     let current = 1;
@@ -221,9 +220,21 @@
       indicator.textContent = `${current} / ${total}`;
     }
 
-    function nextSlide() { current++; updateSlide(); }
-    function prevSlide() { current--; updateSlide(); }
-    function goToSlide(num) { current = num; updateSlide(); toggleSidebar(false); }
+    function nextSlide() {
+      current++;
+      updateSlide();
+    }
+
+    function prevSlide() {
+      current--;
+      updateSlide();
+    }
+
+    function goToSlide(num) {
+      current = num;
+      updateSlide();
+      toggleSidebar(false);
+    }
 
     function toggleSidebar(forceClose = undefined) {
       const sidebar = document.getElementById('sidebar');
@@ -238,7 +249,9 @@
 
     function goToInputPage() {
       const val = parseInt(document.getElementById('pageInput').value);
-      if (val >= 1 && val <= total) goToSlide(val);
+      if (val >= 1 && val <= total) {
+        goToSlide(val);
+      }
     }
 
     function filterMenu() {
@@ -255,35 +268,27 @@
       }
     }
 
-    function copyCurrentURL() {
-      const url = `${window.location.origin}${window.location.pathname}?v=${current}`;
-      navigator.clipboard.writeText(url);
-      alert("현재 페이지 링크가 복사되었습니다.");
-    }
-
     function copyBaseURL() {
       navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
       alert("홈 링크가 복사되었습니다.");
     }
 
-    // 터치 슬라이드 - 네이버 인앱 대응
-    const slider = document.querySelector('.slider');
+    // 터치 이동
     let startX = 0;
     let isTouching = false;
-    slider.addEventListener('touchstart', e => {
-      if (e.touches.length > 1) return;
+    slides.addEventListener('touchstart', e => {
       isTouching = true;
       startX = e.touches[0].clientX;
-    }, { passive: false });
+    });
 
-    slider.addEventListener('touchend', e => {
+    slides.addEventListener('touchend', e => {
       if (!isTouching) return;
       const endX = e.changedTouches[0].clientX;
       const diff = startX - endX;
       if (diff > 50) nextSlide();
       else if (diff < -50) prevSlide();
       isTouching = false;
-    }, { passive: false });
+    });
 
     // 사이드바 외부 클릭 시 닫기
     document.addEventListener('click', function (e) {
@@ -297,6 +302,6 @@
     });
 
     updateSlide();
-</script>
+  </script>
 </body>
 </html>
