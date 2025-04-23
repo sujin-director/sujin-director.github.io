@@ -4,43 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2025년 제9기 최고위과정 원우수첩</title>
-
-  <!-- 메타 정보 -->
   <meta name="description" content="링크를 눌러 9기 교육생의 프로필을 확인해보세요.">
-  <meta property="og:title" content="2025년 제9기 최고위과정 원우수첩">
-  <meta property="og:description" content="링크를 눌러 9기 교육생의 프로필을 확인해보세요.">
-  <meta property="og:image" content="https://sujin-director.github.io/thumbnail.jpg">
-  <meta property="og:url" content="https://sujin-director.github.io/">
-  <meta property="og:type" content="website">
 
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: #fff;
-      color: #000;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       font-family: sans-serif;
-      touch-action: manipulation;
+      background-color: #fff;
+      color: #000;
     }
 
     .slider {
-      position: relative;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
+      position: relative;
     }
 
     .slides {
       display: flex;
-      height: 100%;
       transition: transform 0.5s ease-in-out;
+      height: 100%;
     }
 
     .slide-wrapper {
       flex-shrink: 0;
       width: 100vw;
       height: 100vh;
-      overflow: auto;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -103,10 +96,9 @@
       top: 0;
       left: 0;
       height: 100%;
-      width: 260px;
+      width: 280px;
       background: #fff;
-      color: #000;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+      box-shadow: 4px 0 12px rgba(0,0,0,0.1);
       padding: 20px;
       display: none;
       flex-direction: column;
@@ -114,49 +106,57 @@
       overflow-y: auto;
     }
 
+    .sidebar .section {
+      margin-bottom: 18px;
+    }
+
     .sidebar h3 {
-      margin: 16px 0 8px;
       font-size: 16px;
       font-weight: bold;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      color: #111;
+      border-left: none;
     }
 
-    .sidebar h3::before {
-      content: '|';
-      margin-right: 8px;
-      color: #aaa;
+    .sidebar h3 span {
+      font-weight: normal;
+      font-size: 16px;
     }
 
     .sidebar button {
-      margin: 5px 0;
+      margin: 4px 0;
       padding: 8px;
       font-size: 14px;
       border: none;
-      border-radius: 5px;
-      text-align: left;
-      cursor: pointer;
+      border-radius: 6px;
       background: #eee;
       color: #000;
       width: 100%;
+      text-align: left;
+      cursor: pointer;
     }
 
     .sidebar input {
-      margin: 5px 0 10px;
+      margin: 6px 0 8px;
       padding: 8px;
       width: 100%;
       border-radius: 4px;
       border: 1px solid #ccc;
     }
 
-    .sidebar .section {
-      margin-bottom: 16px;
+    .sidebar a {
+      text-decoration: none;
+      color: #2196F3;
+      font-weight: bold;
     }
 
-    .sidebar .icon {
-      font-size: 14px;
-      opacity: 0.6;
+    .search-icon,
+    .page-icon,
+    .share-icon {
+      font-size: 16px;
+      opacity: 0.7;
     }
   </style>
 </head>
@@ -172,19 +172,19 @@
     </div>
 
     <div class="section">
-      <h3>| 이름 검색 <span class="icon">🔍</span></h3>
+      <h3>| 이름 검색 <span>🔍</span></h3>
       <input type="text" id="searchBox" placeholder="이름 입력" oninput="filterMenu()" />
       <div id="searchResults"></div>
     </div>
 
     <div class="section">
-      <h3>| 페이지 이동 <span class="icon">📄</span></h3>
+      <h3>| 페이지 이동 <span>📄</span></h3>
       <input type="number" id="pageInput" placeholder="페이지 번호" min="1" max="24" />
       <button onclick="goToInputPage()">이동</button>
     </div>
 
     <div class="section">
-      <h3>| 공유하기 <span class="icon">🔗</span></h3>
+      <h3>| 공유하기 <span>🔗</span></h3>
       <button onclick="copyCurrentURL()">현재 페이지 링크 복사</button>
       <button onclick="copyBaseURL()">홈 링크 복사</button>
     </div>
@@ -192,7 +192,6 @@
 
   <div class="slider">
     <div class="slides" id="slides">
-      <!-- 이미지 슬라이드 1~24번 -->
       <div class="slide-wrapper"><img src="금융보안원시안1_1.jpg" /></div>
       <div class="slide-wrapper"><img src="금융보안원시안1_2.jpg" /></div>
       <div class="slide-wrapper"><img src="금융보안원시안1_3.jpg" /></div>
@@ -225,139 +224,124 @@
     </div>
     <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
-<script>
-const slides = document.getElementById('slides');
-const total = 24;
-let current = 1;
-const indicator = document.getElementById('indicator');
 
-const searchIndex = {
-  '강호석': [6, 11], '고재술': [6, 11], '권윤정': [6, 11],
-  '김경주': [6, 12], '김동혁': [6, 12], '김은희': [6, 12],
-  '김정아': [6, 13], '김정원': [6, 13], '김종원': [6, 13],
-  '박병삼': [6, 14], '박영수': [7, 14], '배진석': [7, 14],
-  '서홍원': [7, 15], '손영환': [7, 15], '송영신': [7, 15],
-  '신용철': [7, 16], '심성용': [7, 16], '오상원': [7, 16],
-  '오중효': [7, 17], '윤찬식': [7, 17], '윤태진': [8, 17],
-  '이동준': [8, 18], '이상운': [8, 18], '이주호': [8, 18],
-  '이현아': [8, 19], '장경운': [8, 19], '장만우': [8, 19],
-  '장세원': [8, 20], '전우영': [8, 20], '정기영': [8, 20],
-  '정병석': [9, 21], '정수용': [9, 21], '정용준': [9, 21],
-  '정태영': [9, 22], '정혁주': [9, 22], '현정훈': [9, 22],
-  '황성식': [9, 23], '황의자': [9, 23]
-};
+  <script>
+    const slides = document.getElementById('slides');
+    const total = 24;
+    let current = 1;
+    const indicator = document.getElementById('indicator');
 
-function updateSlide() {
-  slides.style.transform = `translateX(-${(current - 1) * 100}vw)`;
-  indicator.textContent = `${current} / ${total}`;
-}
+    const searchIndex = {
+      '강호석': [6, 11], '고재술': [6, 11], '권윤정': [6, 11],
+      '김경주': [6, 12], '김동혁': [6, 12], '김은희': [6, 12],
+      '김정아': [6, 13], '김정원': [6, 13], '김종원': [6, 13],
+      '박병삼': [6, 14], '박영수': [7, 14], '배진석': [7, 14],
+      '서홍원': [7, 15], '손영환': [7, 15], '송영신': [7, 15],
+      '신용철': [7, 16], '심성용': [7, 16], '오상원': [7, 16],
+      '오중효': [7, 17], '윤찬식': [7, 17], '윤태진': [8, 17],
+      '이동준': [8, 18], '이상운': [8, 18], '이주호': [8, 18],
+      '이현아': [8, 19], '장경운': [8, 19], '장만우': [8, 19],
+      '장세원': [8, 20], '전우영': [8, 20], '정기영': [8, 20],
+      '정병석': [9, 21], '정수용': [9, 21], '정용준': [9, 21],
+      '정태영': [9, 22], '정혁주': [9, 22], '현정훈': [9, 22],
+      '황성식': [9, 23], '황의자': [9, 23]
+    };
 
-function nextSlide() {
-  current++;
-  updateSlide();
-}
+    function updateSlide() {
+      if (current < 1) current = total;
+      if (current > total) current = 1;
+      slides.style.transform = `translateX(-${(current - 1) * 100}vw)`;
+      indicator.textContent = `${current} / ${total}`;
+    }
 
-function prevSlide() {
-  current--;
-  updateSlide();
-}
+    function nextSlide() {
+      current++;
+      updateSlide();
+    }
 
-function goToSlide(num) {
-  current = num;
-  updateSlide();
-  toggleSidebar(false);
-}
+    function prevSlide() {
+      current--;
+      updateSlide();
+    }
 
-function goToInputPage() {
-  const val = parseInt(document.getElementById('pageInput').value);
-  if (val >= 1 && val <= total) {
-    goToSlide(val);
-  }
-}
+    function goToSlide(num) {
+      current = num;
+      updateSlide();
+      toggleSidebar(false);
+    }
 
-function toggleSidebar(forceClose = undefined) {
-  const sidebar = document.getElementById('sidebar');
-  if (forceClose === false || sidebar.style.display === 'flex') {
-    sidebar.style.display = 'none';
-  } else {
-    sidebar.style.display = 'flex';
-    document.getElementById('searchBox').value = '';
-    document.getElementById('searchResults').innerHTML = '';
-  }
-}
+    function toggleSidebar(forceClose = undefined) {
+      const sidebar = document.getElementById('sidebar');
+      if (forceClose === false || sidebar.style.display === 'flex') {
+        sidebar.style.display = 'none';
+      } else {
+        sidebar.style.display = 'flex';
+        document.getElementById('searchBox').value = '';
+        document.getElementById('searchResults').innerHTML = '';
+      }
+    }
 
-function filterMenu() {
-  const input = document.getElementById('searchBox').value.trim();
-  const results = document.getElementById('searchResults');
-  results.innerHTML = '';
-  if (input && searchIndex[input]) {
-    searchIndex[input].forEach(slideNum => {
-      const btn = document.createElement('button');
-      btn.innerText = `${input} - 슬라이드 ${slideNum}번`;
-      btn.onclick = () => goToSlide(slideNum);
-      results.appendChild(btn);
+    function goToInputPage() {
+      const val = parseInt(document.getElementById('pageInput').value);
+      if (val >= 1 && val <= total) {
+        goToSlide(val);
+      }
+    }
+
+    function filterMenu() {
+      const input = document.getElementById('searchBox').value.trim();
+      const results = document.getElementById('searchResults');
+      results.innerHTML = '';
+      if (input && searchIndex[input]) {
+        searchIndex[input].forEach(slideNum => {
+          const btn = document.createElement('button');
+          btn.innerText = `${input} - ${slideNum}p 이동`;
+          btn.onclick = () => goToSlide(slideNum);
+          results.appendChild(btn);
+        });
+      }
+    }
+
+    function copyCurrentURL() {
+      const url = `${window.location.origin}${window.location.pathname}?v=${current}`;
+      navigator.clipboard.writeText(url);
+      alert("현재 페이지 링크가 복사되었습니다.");
+    }
+
+    function copyBaseURL() {
+      navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
+      alert("홈 링크가 복사되었습니다.");
+    }
+
+    // 터치 이동
+    let startX = 0;
+    let isTouching = false;
+    slides.addEventListener('touchstart', e => {
+      isTouching = true;
+      startX = e.touches[0].clientX;
     });
-  }
-}
 
-function copyCurrentURL() {
-  const url = `${window.location.origin}${window.location.pathname}?v=${current}`;
-  navigator.clipboard.writeText(url);
-  alert("현재 페이지 링크가 복사되었습니다.");
-}
+    slides.addEventListener('touchend', e => {
+      if (!isTouching) return;
+      const endX = e.changedTouches[0].clientX;
+      const diff = startX - endX;
+      if (diff > 50) nextSlide();
+      else if (diff < -50) prevSlide();
+      isTouching = false;
+    });
 
-function copyBaseURL() {
-  navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
-  alert("홈 링크가 복사되었습니다.");
-}
+    // 사이드바 외부 클릭 시 닫기
+    document.addEventListener('click', function (e) {
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.querySelector('.menu-toggle');
+      if (sidebar.style.display === 'flex' &&
+          !sidebar.contains(e.target) &&
+          !toggleBtn.contains(e.target)) {
+        sidebar.style.display = 'none';
+      }
+    });
 
-// 무한 루프 슬라이드 보정
-slides.addEventListener('transitionend', () => {
-  if (current > total) {
-    current = 1;
-    slides.style.transition = 'none';
     updateSlide();
-    requestAnimationFrame(() => {
-      slides.style.transition = 'transform 0.5s ease-in-out';
-    });
-  } else if (current < 1) {
-    current = total;
-    slides.style.transition = 'none';
-    updateSlide();
-    requestAnimationFrame(() => {
-      slides.style.transition = 'transform 0.5s ease-in-out';
-    });
-  }
-});
-
-// 터치 슬라이드
-let startX = 0;
-let isTouching = false;
-slides.addEventListener('touchstart', e => {
-  isTouching = true;
-  startX = e.touches[0].clientX;
-});
-slides.addEventListener('touchend', e => {
-  if (!isTouching) return;
-  const endX = e.changedTouches[0].clientX;
-  const diff = startX - endX;
-  if (diff > 50) nextSlide();
-  else if (diff < -50) prevSlide();
-  isTouching = false;
-});
-
-// 사이드바 바깥 클릭 시 닫기
-document.addEventListener('click', function (e) {
-  const sidebar = document.getElementById('sidebar');
-  const toggleBtn = document.querySelector('.menu-toggle');
-  if (sidebar.style.display === 'flex' &&
-      !sidebar.contains(e.target) &&
-      !toggleBtn.contains(e.target)) {
-    sidebar.style.display = 'none';
-  }
-});
-
-updateSlide();
-</script>
+  </script>
 </body>
 </html>
