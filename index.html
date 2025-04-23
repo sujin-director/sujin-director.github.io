@@ -191,117 +191,117 @@
     <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
 
-  <script>
-    const slides = document.getElementById('slides');
-    const total = 24;
-    let current = 1;
-    const indicator = document.getElementById('indicator');
+ <script>
+  const slides = document.getElementById('slides');
+  const total = 24;
+  let current = 1;
+  const indicator = document.getElementById('indicator');
 
-    const searchIndex = {
-      '강호석': [6, 11], '고재술': [6, 11], '권윤정': [6, 11],
-      '김경주': [6, 12], '김동혁': [6, 12], '김은희': [6, 12],
-      '김정아': [6, 13], '김정원': [6, 13], '김종원': [6, 13],
-      '박병삼': [6, 14], '박영수': [7, 14], '배진석': [7, 14],
-      '서홍원': [7, 15], '손영환': [7, 15], '송영신': [7, 15],
-      '신용철': [7, 16], '심성용': [7, 16], '오상원': [7, 16],
-      '오중효': [7, 17], '윤찬식': [7, 17], '윤태진': [8, 17],
-      '이동준': [8, 18], '이상운': [8, 18], '이주호': [8, 18],
-      '이현아': [8, 19], '장경운': [8, 19], '장만우': [8, 19],
-      '장세원': [8, 20], '전우영': [8, 20], '정기영': [8, 20],
-      '정병석': [9, 21], '정수용': [9, 21], '정용준': [9, 21],
-      '정태영': [9, 22], '정혁주': [9, 22], '현정훈': [9, 22],
-      '황성식': [9, 23], '황의자': [9, 23]
-    };
+  const searchIndex = {
+    '강호석': [6, 11], '고재술': [6, 11], '권윤정': [6, 11],
+    '김경주': [6, 12], '김동혁': [6, 12], '김은희': [6, 12],
+    '김정아': [6, 13], '김정원': [6, 13], '김종원': [6, 13],
+    '박병삼': [6, 14], '박영수': [7, 14], '배진석': [7, 14],
+    '서홍원': [7, 15], '손영환': [7, 15], '송영신': [7, 15],
+    '신용철': [7, 16], '심성용': [7, 16], '오상원': [7, 16],
+    '오중효': [7, 17], '윤찬식': [7, 17], '윤태진': [8, 17],
+    '이동준': [8, 18], '이상운': [8, 18], '이주호': [8, 18],
+    '이현아': [8, 19], '장경운': [8, 19], '장만우': [8, 19],
+    '장세원': [8, 20], '전우영': [8, 20], '정기영': [8, 20],
+    '정병석': [9, 21], '정수용': [9, 21], '정용준': [9, 21],
+    '정태영': [9, 22], '정혁주': [9, 22], '현정훈': [9, 22],
+    '황성식': [9, 23], '황의자': [9, 23]
+  };
 
-    function updateSlide() {
-      if (current < 1) current = total;
-      if (current > total) current = 1;
-      slides.style.transform = `translateX(-${(current - 1) * 100}vw)`;
-      indicator.textContent = `${current} / ${total}`;
+  function updateSlide() {
+    if (current < 1) current = total;
+    if (current > total) current = 1;
+    slides.style.transform = `translateX(-${(current - 1) * 100}vw)`;
+    indicator.textContent = `${current} / ${total}`;
+  }
+
+  function nextSlide() { current++; updateSlide(); }
+  function prevSlide() { current--; updateSlide(); }
+  function goToSlide(num) { current = num; updateSlide(); toggleSidebar(false); }
+
+  function toggleSidebar(forceClose = undefined) {
+    const sidebar = document.getElementById('sidebar');
+    if (forceClose === false || sidebar.style.display === 'flex') {
+      sidebar.style.display = 'none';
+    } else {
+      sidebar.style.display = 'flex';
+      document.getElementById('searchBox').value = '';
+      document.getElementById('searchResults').innerHTML = '';
     }
+  }
 
-    function nextSlide() {
-      current++;
-      updateSlide();
+  function goToInputPage() {
+    const val = parseInt(document.getElementById('pageInput').value);
+    if (val >= 1 && val <= total) goToSlide(val);
+  }
+
+  function filterMenu() {
+    const input = document.getElementById('searchBox').value.trim();
+    const results = document.getElementById('searchResults');
+    results.innerHTML = '';
+    if (input && searchIndex[input]) {
+      searchIndex[input].forEach(slideNum => {
+        const btn = document.createElement('button');
+        btn.innerText = `${input} - ${slideNum}p 이동`;
+        btn.onclick = () => goToSlide(slideNum);
+        results.appendChild(btn);
+      });
     }
+  }
 
-    function prevSlide() {
-      current--;
-      updateSlide();
+  function copyCurrentURL() {
+    const url = `${window.location.origin}${window.location.pathname}?v=${current}`;
+    navigator.clipboard.writeText(url);
+    alert("현재 페이지 링크가 복사되었습니다.");
+  }
+
+  function copyBaseURL() {
+    navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
+    alert("홈 링크가 복사되었습니다.");
+  }
+
+  // 사이드바 외부 클릭 시 닫기
+  document.addEventListener('click', function (e) {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.querySelector('.menu-toggle');
+    if (sidebar.style.display === 'flex' &&
+        !sidebar.contains(e.target) &&
+        !toggleBtn.contains(e.target)) {
+      sidebar.style.display = 'none';
     }
+  });
 
-    function goToSlide(num) {
-      current = num;
-      updateSlide();
-      toggleSidebar(false);
-    }
+  // 터치 이동 처리 (네이버 인앱 브라우저 대응)
+  let startX = 0;
+  let isTouching = false;
 
-    function toggleSidebar(forceClose = undefined) {
-      const sidebar = document.getElementById('sidebar');
-      if (forceClose === false || sidebar.style.display === 'flex') {
-        sidebar.style.display = 'none';
-      } else {
-        sidebar.style.display = 'flex';
-        document.getElementById('searchBox').value = '';
-        document.getElementById('searchResults').innerHTML = '';
-      }
-    }
-
-    function goToInputPage() {
-      const val = parseInt(document.getElementById('pageInput').value);
-      if (val >= 1 && val <= total) {
-        goToSlide(val);
-      }
-    }
-
-    function filterMenu() {
-      const input = document.getElementById('searchBox').value.trim();
-      const results = document.getElementById('searchResults');
-      results.innerHTML = '';
-      if (input && searchIndex[input]) {
-        searchIndex[input].forEach(slideNum => {
-          const btn = document.createElement('button');
-          btn.innerText = `${input} - ${slideNum}p 이동`;
-          btn.onclick = () => goToSlide(slideNum);
-          results.appendChild(btn);
-        });
-      }
-    }
-
-    function copyBaseURL() {
-      navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
-      alert("홈 링크가 복사되었습니다.");
-    }
-
-    // 터치 이동
-    let startX = 0;
-    let isTouching = false;
-    slides.addEventListener('touchstart', e => {
+  slides.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) {
       isTouching = true;
       startX = e.touches[0].clientX;
-    });
+    }
+  }, { passive: false });
 
-    slides.addEventListener('touchend', e => {
-      if (!isTouching) return;
-      const endX = e.changedTouches[0].clientX;
-      const diff = startX - endX;
-      if (diff > 50) nextSlide();
-      else if (diff < -50) prevSlide();
-      isTouching = false;
-    });
+  slides.addEventListener('touchmove', e => {
+    if (!isTouching) return;
+    e.preventDefault(); // 스크롤 방지
+  }, { passive: false });
 
-    // 사이드바 외부 클릭 시 닫기
-    document.addEventListener('click', function (e) {
-      const sidebar = document.getElementById('sidebar');
-      const toggleBtn = document.querySelector('.menu-toggle');
-      if (sidebar.style.display === 'flex' &&
-          !sidebar.contains(e.target) &&
-          !toggleBtn.contains(e.target)) {
-        sidebar.style.display = 'none';
-      }
-    });
+  slides.addEventListener('touchend', e => {
+    if (!isTouching || e.changedTouches.length !== 1) return;
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    if (diff > 50) nextSlide();
+    else if (diff < -50) prevSlide();
+    isTouching = false;
+  });
 
-    updateSlide();
-  </script>
+  updateSlide();
+</script>
 </body>
 </html>
