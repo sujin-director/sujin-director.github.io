@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2025년 제9기 최고위과정 원우수첩</title>
+
+  <!-- 메타 정보 -->
   <meta name="description" content="링크를 눌러 9기 교육생의 프로필을 확인해보세요.">
   <meta property="og:title" content="2025년 제9기 최고위과정 원우수첩">
   <meta property="og:description" content="링크를 눌러 9기 교육생의 프로필을 확인해보세요.">
@@ -14,34 +16,40 @@
   <style>
     body {
       margin: 0;
-      background: #000;
-      overflow: hidden;
+      background: #fff;
+      color: #000;
       font-family: sans-serif;
     }
+
     .slider {
+      position: relative;
       width: 100vw;
       height: 100vh;
-      display: flex;
       overflow: hidden;
     }
+
     .slides {
       display: flex;
+      height: 100%;
       transition: transform 0.5s ease-in-out;
     }
+
     .slide-wrapper {
+      flex-shrink: 0;
       width: 100vw;
       height: 100vh;
+      overflow: auto;
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-shrink: 0;
-      overflow: auto;
     }
+
     .slide-wrapper img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
     }
+
     .buttons {
       position: absolute;
       bottom: 60px;
@@ -51,121 +59,154 @@
       padding: 0 10px;
       z-index: 10;
     }
+
     .buttons button {
-      background: rgba(0,0,0,0.5);
-      color: white;
+      background: rgba(255,255,255,0.8);
+      color: #000;
       border: none;
       font-size: 24px;
       padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
     }
+
     .page-indicator {
       position: absolute;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      color: white;
-      background: rgba(0, 0, 0, 0.5);
+      color: #333;
+      background: rgba(255,255,255,0.8);
       padding: 4px 10px;
       border-radius: 10px;
-      font-size: 13px;
+      font-size: 12.6px;
       z-index: 10;
     }
 
-    .sidebar-toggle {
+    .menu-toggle {
       position: fixed;
       top: 12px;
       left: 12px;
       z-index: 20;
       font-size: 26px;
-      color: white;
+      color: #000;
       cursor: pointer;
-      background: rgba(0,0,0,0.5);
+      background: rgba(255,255,255,0.8);
       border-radius: 6px;
       padding: 4px 10px;
     }
 
-    .sidebar {
+    .toc-menu {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 280px;
-      height: 100%;
-      background: rgba(0,0,0,0.9);
+      top: 50px;
+      left: 12px;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.9);
       color: white;
-      padding: 16px;
-      box-sizing: border-box;
-      z-index: 30;
+      padding: 12px;
+      border-radius: 10px;
       display: none;
       flex-direction: column;
-      gap: 16px;
+      gap: 10px;
+      max-height: 85vh;
       overflow-y: auto;
+      width: 90vw;
+      max-width: 300px;
     }
 
-    .menu-section h4 {
-      margin: 0 0 8px;
+    .toc-menu h3 {
+      margin: 0;
       font-size: 16px;
-      border-bottom: 1px solid #555;
-      padding-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .menu-section button,
-    .menu-section input {
-      width: 100%;
-      margin-bottom: 6px;
-      padding: 6px 10px;
-      border: none;
-      border-radius: 4px;
+    .toc-menu button,
+    .toc-menu input {
+      width: 48%;
+      padding: 8px;
       font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      box-sizing: border-box;
     }
 
-    .menu-section button {
+    .toc-menu input {
+      width: 100%;
+    }
+
+    .toc-menu .section-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4%;
+      justify-content: space-between;
+    }
+
+    .toc-menu .section-buttons button {
       background: #eee;
-      cursor: pointer;
-      text-align: left;
+      color: #000;
     }
 
-    .menu-section input {
-      background: white;
+    .toc-menu .action-buttons button {
+      background: #f5f5f5;
+      color: #1a73e8;
+      width: 100%;
     }
   </style>
 </head>
 <body>
-  <div class="sidebar-toggle" onclick="toggleSidebar()">☰</div>
-
-  <div class="sidebar" id="sidebar">
-    <div class="menu-section">
-      <h4>📚 목차</h4>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  <div class="toc-menu" id="tocMenu">
+    <h3>📚 목차</h3>
+    <div class="section-buttons">
       <button onclick="goToSlide(3)">1. 교육 일정</button>
       <button onclick="goToSlide(6)">2. 교육생 명단</button>
       <button onclick="goToSlide(11)">3. 교육생 소개</button>
     </div>
 
-    <div class="menu-section">
-      <h4>🔍 이름 검색</h4>
-      <input type="text" id="searchBox" oninput="filterMenu()" placeholder="이름 입력" />
-      <div id="searchResults"></div>
+    <h3>🔍 이름 검색</h3>
+    <input type="text" id="searchBox" oninput="filterMenu()" placeholder="이름 입력" />
+    <div id="searchResults"></div>
+
+    <h3>📰 페이지 이동</h3>
+    <input type="number" id="pageInput" min="1" max="24" placeholder="페이지 번호 입력" />
+    <div class="section-buttons">
+      <button onclick="goToPage()">이동</button>
     </div>
 
-    <div class="menu-section">
-      <h4>📄 페이지 이동</h4>
-      <input type="number" id="pageInput" min="1" max="24" />
-      <button onclick="goToSlideFromInput()">이동</button>
-    </div>
-
-    <div class="menu-section">
-      <h4>🔗 공유하기</h4>
-      <button onclick="copyCurrentURL()">현재 페이지 공유</button>
-      <button onclick="copyBaseURL()">전체 링크 복사</button>
+    <h3>🔗 공유하기</h3>
+    <div class="action-buttons">
+      <button onclick="shareCurrent()">현재 페이지 공유</button>
+      <button onclick="copyLink()">전체 링크 복사</button>
     </div>
   </div>
   <div class="slider" id="slider">
     <div class="slides" id="slides">
-      <div class="slide-wrapper"><img src="금융보안원시안1_24.jpg" /></div>
-      <!-- 본문 슬라이드 1~24 -->
-      ${[...Array(24)].map((_, i) => `<div class="slide-wrapper"><img src="금융보안원시안1_${i+1}.jpg" /></div>`).join('')}
       <div class="slide-wrapper"><img src="금융보안원시안1_1.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_2.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_3.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_4.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_5.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_6.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_7.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_8.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_9.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_10.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_11.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_12.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_13.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_14.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_15.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_16.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_17.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_18.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_19.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_20.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_21.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_22.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_23.jpg" /></div>
+      <div class="slide-wrapper"><img src="금융보안원시안1_24.jpg" /></div>
     </div>
 
     <div class="buttons">
@@ -182,88 +223,51 @@
     const indicator = document.getElementById('indicator');
 
     const searchIndex = {
-      '강호석': [6, 11],
-      '고재술': [6, 11],
-      '권윤정': [6, 11],
-      '김경주': [6, 12],
-      '김동혁': [6, 12],
-      '김은희': [6, 12],
-      '김정아': [6, 13],
-      '김정원': [6, 13],
-      '김종원': [6, 13],
-      '박병삼': [6, 14],
-      '박영수': [7, 14],
-      '배진석': [7, 14],
-      '서홍원': [7, 15],
-      '손영환': [7, 15],
-      '송영신': [7, 15],
-      '신용철': [7, 16],
-      '심성용': [7, 16],
-      '오상원': [7, 16],
-      '오중효': [7, 17],
-      '윤찬식': [7, 17],
-      '윤태진': [8, 17],
-      '이동준': [8, 18],
-      '이상운': [8, 18],
-      '이주호': [8, 18],
-      '이현아': [8, 19],
-      '장경운': [8, 19],
-      '장만우': [8, 19],
-      '장세원': [8, 20],
-      '전우영': [8, 20],
-      '정기영': [8, 20],
-      '정병석': [9, 21],
-      '정수용': [9, 21],
-      '정용준': [9, 21],
-      '정태영': [9, 22],
-      '정혁주': [9, 22],
-      '현정훈': [9, 22],
-      '황성식': [9, 23],
-      '황의자': [9, 23]
+      '강호석': [6, 11], '고재술': [6, 11], '권윤정': [6, 11],
+      '김경주': [6, 12], '김동혁': [6, 12], '김은희': [6, 12],
+      '김정아': [6, 13], '김정원': [6, 13], '김종원': [6, 13],
+      '박병삼': [6, 14], '박영수': [7, 14], '배진석': [7, 14],
+      '서홍원': [7, 15], '손영환': [7, 15], '송영신': [7, 15],
+      '신용철': [7, 16], '심성용': [7, 16], '오상원': [7, 16],
+      '오중효': [7, 17], '윤찬식': [7, 17], '윤태진': [8, 17],
+      '이동준': [8, 18], '이상운': [8, 18], '이주호': [8, 18],
+      '이현아': [8, 19], '장경운': [8, 19], '장만우': [8, 19],
+      '장세원': [8, 20], '전우영': [8, 20], '정기영': [8, 20],
+      '정병석': [9, 21], '정수용': [9, 21], '정용준': [9, 21],
+      '정태영': [9, 22], '정혁주': [9, 22], '현정훈': [9, 22],
+      '황성식': [9, 23], '황의자': [9, 23]
     };
-    function updateSlide(skipTransition = false) {
-      slides.style.transition = skipTransition ? 'none' : 'transform 0.5s ease-in-out';
-      slides.style.transform = `translateX(-${current * 100}vw)`;
-      const displayPage = current === 0 ? total : (current > total ? 1 : current);
-      indicator.textContent = `${displayPage} / ${total}`;
-    }
 
-    function nextSlide() {
-      if (current < total + 1) {
-        current++;
-        updateSlide();
-      }
-    }
-
-    function prevSlide() {
-      if (current > 0) {
-        current--;
-        updateSlide();
-      }
+    function updateSlide() {
+      slides.style.transform = `translateX(-${(current - 1) * 100}vw)`;
+      indicator.textContent = `${current} / ${total}`;
     }
 
     function goToSlide(num) {
       current = num;
       updateSlide();
-      hideSidebar();
+      hideMenu();
     }
 
-    function goToSlideFromInput() {
-      const val = parseInt(document.getElementById('pageInput').value);
-      if (val >= 1 && val <= total) {
-        goToSlide(val);
-      }
+    function nextSlide() {
+      if (current < total) current++;
+      updateSlide();
     }
 
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.style.display = (sidebar.style.display === 'flex') ? 'none' : 'flex';
+    function prevSlide() {
+      if (current > 1) current--;
+      updateSlide();
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('tocMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
       document.getElementById('searchBox').value = '';
       document.getElementById('searchResults').innerHTML = '';
     }
 
-    function hideSidebar() {
-      document.getElementById('sidebar').style.display = 'none';
+    function hideMenu() {
+      document.getElementById('tocMenu').style.display = 'none';
     }
 
     function filterMenu() {
@@ -280,52 +284,26 @@
       }
     }
 
-    function copyCurrentURL() {
-      const url = `https://sujin-director.github.io?v=${current}`;
-      navigator.clipboard.writeText(url)
-        .then(() => alert("현재 페이지 링크가 복사되었습니다."));
+    function goToPage() {
+      const input = document.getElementById('pageInput').value;
+      const num = parseInt(input);
+      if (num >= 1 && num <= total) {
+        goToSlide(num);
+      }
     }
 
-    function copyBaseURL() {
-      navigator.clipboard.writeText("https://sujin-director.github.io")
-        .then(() => alert("기본 링크가 복사되었습니다."));
+    function shareCurrent() {
+      const url = `${window.location.origin}${window.location.pathname}?v=${current}`;
+      navigator.clipboard.writeText(url);
+      alert("현재 페이지 링크가 복사되었습니다.");
     }
 
-    slides.addEventListener('transitionend', () => {
-      if (current === 0) {
-        current = total;
-        updateSlide(true);
-      } else if (current === total + 1) {
-        current = 1;
-        updateSlide(true);
-      }
-    });
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href);
+      alert("전체 링크가 복사되었습니다.");
+    }
 
-    // 모바일 터치 제어
-    let isZooming = false;
-    let startX = 0;
-    let moved = false;
-    document.addEventListener('touchstart', (e) => {
-      if (e.touches.length >= 2) { isZooming = true; return; }
-      isZooming = false;
-      startX = e.touches[0].clientX;
-      moved = false;
-    });
-    document.addEventListener('touchmove', (e) => {
-      if (e.touches.length === 1) {
-        const dx = e.touches[0].clientX - startX;
-        if (Math.abs(dx) > 10) moved = true;
-      }
-    });
-    document.addEventListener('touchend', (e) => {
-      if (isZooming || !moved || e.changedTouches.length !== 1) return;
-      const endX = e.changedTouches[0].clientX;
-      const dx = startX - endX;
-      if (dx > 50) nextSlide();
-      else if (dx < -50) prevSlide();
-    });
-
-    updateSlide(true);
+    updateSlide();
   </script>
 </body>
 </html>
