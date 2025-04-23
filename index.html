@@ -165,10 +165,22 @@
       color: #2196F3;
       font-weight: bold;
     }
-  </style>
+    </style>
 </head>
 <body>
   <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+  <button class="home-button" onclick="goToSlide(1)">🏠</button>
+.home-button {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  font-size: 24px;
+  background: transparent;
+  color: #333;
+  z-index: 30;
+  cursor: pointer;
+  border: none;
+}
 
   <div class="sidebar" id="sidebar">
     <div class="section">
