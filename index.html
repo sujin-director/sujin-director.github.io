@@ -1,4 +1,3 @@
-<!-- 너무 길어질 수 있어서 다음 메시지에 순차적으로 나눠서 이어드릴게요! 아래부터 코드 시작 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -94,13 +93,13 @@
 
     .sidebar {
       position: fixed;
-      top: 48px;
+      top: 0;
       left: 0;
-      height: calc(100% - 48px);
+      height: 100%;
       width: 280px;
       background: #fff;
       box-shadow: 4px 0 12px rgba(0,0,0,0.1);
-      padding: 20px;
+      padding: 70px 20px 20px 20px;
       display: none;
       flex-direction: column;
       z-index: 25;
@@ -114,15 +113,7 @@
     .sidebar h3 {
       font-size: 16px;
       font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       color: #111;
-    }
-
-    .sidebar h3 span {
-      font-weight: normal;
-      font-size: 16px;
     }
 
     .sidebar button {
@@ -138,8 +129,33 @@
       cursor: pointer;
     }
 
-    .sidebar input {
-      margin: 6px 0 8px;
+    .sidebar input[type="number"] {
+      padding: 8px;
+      width: calc(100% - 40px);
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .go-btn {
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+      margin-left: 6px;
+      background-color: #eee;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar input[type="text"] {
+      margin-bottom: 8px;
       padding: 8px;
       width: 100%;
       border-radius: 4px;
@@ -159,24 +175,28 @@
     </div>
 
     <div class="section">
-      <h3>| 이름 검색 <span>🔍</span></h3>
+      <h3>| 이름 검색</h3>
       <input type="text" id="searchBox" placeholder="이름 입력" oninput="filterMenu()" />
       <div id="searchResults"></div>
     </div>
 
     <div class="section">
-      <h3>| 페이지 이동 <span>📄</span></h3>
-      <input type="number" id="pageInput" placeholder="페이지 번호 입력" min="1" max="24" />
+      <h3>| 페이지 이동</h3>
+      <div class="input-row">
+        <input type="number" id="pageInput" placeholder="페이지 번호 입력" min="1" max="24" />
+        <button class="go-btn" id="goPageBtn" onclick="goToInputPage()">✅</button>
+      </div>
     </div>
 
     <div class="section">
-      <h3>| 공유하기 <span>🔗</span></h3>
+      <h3>| 공유하기</h3>
       <button onclick="copyBaseURL()">홈 링크 복사</button>
     </div>
   </div>
 
   <div class="slider">
     <div class="slides" id="slides">
+      <!-- 슬라이드 이미지 목록 -->
       <div class="slide-wrapper"><img src="금융보안원시안1_1.jpg" /></div>
       <div class="slide-wrapper"><img src="금융보안원시안1_2.jpg" /></div>
       <div class="slide-wrapper"><img src="금융보안원시안1_3.jpg" /></div>
@@ -216,22 +236,6 @@
     let current = 1;
     const indicator = document.getElementById('indicator');
 
-    const searchIndex = {
-      '강호석': [6, 11], '고재술': [6, 11], '권윤정': [6, 11],
-      '김경주': [6, 12], '김동혁': [6, 12], '김은희': [6, 12],
-      '김정아': [6, 13], '김정원': [6, 13], '김종원': [6, 13],
-      '박병삼': [6, 14], '박영수': [7, 14], '배진석': [7, 14],
-      '서홍원': [7, 15], '손영환': [7, 15], '송영신': [7, 15],
-      '신용철': [7, 16], '심성용': [7, 16], '오상원': [7, 16],
-      '오중효': [7, 17], '윤찬식': [7, 17], '윤태진': [8, 17],
-      '이동준': [8, 18], '이상운': [8, 18], '이주호': [8, 18],
-      '이현아': [8, 19], '장경운': [8, 19], '장만우': [8, 19],
-      '장세원': [8, 20], '전우영': [8, 20], '정기영': [8, 20],
-      '정병석': [9, 21], '정수용': [9, 21], '정용준': [9, 21],
-      '정태영': [9, 22], '정혁주': [9, 22], '현정훈': [9, 22],
-      '황성식': [9, 23], '황의자': [9, 23]
-    };
-
     function updateSlide() {
       if (current < 1) current = total;
       if (current > total) current = 1;
@@ -241,7 +245,12 @@
 
     function nextSlide() { current++; updateSlide(); }
     function prevSlide() { current--; updateSlide(); }
-    function goToSlide(num) { current = num; updateSlide(); toggleSidebar(false); }
+
+    function goToSlide(num) {
+      current = num;
+      updateSlide();
+      toggleSidebar(false);
+    }
 
     function toggleSidebar(forceClose = undefined) {
       const sidebar = document.getElementById('sidebar');
@@ -254,18 +263,9 @@
       }
     }
 
-    function filterMenu() {
-      const input = document.getElementById('searchBox').value.trim();
-      const results = document.getElementById('searchResults');
-      results.innerHTML = '';
-      if (input && searchIndex[input]) {
-        searchIndex[input].forEach(slideNum => {
-          const btn = document.createElement('button');
-          btn.innerText = `${input} - ${slideNum}p 이동`;
-          btn.onclick = () => goToSlide(slideNum);
-          results.appendChild(btn);
-        });
-      }
+    function goToInputPage() {
+      const val = parseInt(document.getElementById('pageInput').value);
+      if (val >= 1 && val <= total) goToSlide(val);
     }
 
     function copyBaseURL() {
@@ -273,15 +273,14 @@
       alert("홈 링크가 복사되었습니다.");
     }
 
-    // 페이지 번호 입력 후 Enter로 이동
-    document.getElementById('pageInput').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        const val = parseInt(this.value);
-        if (val >= 1 && val <= total) goToSlide(val);
+    document.addEventListener('click', function (e) {
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.querySelector('.menu-toggle');
+      if (sidebar.style.display === 'flex' && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+        sidebar.style.display = 'none';
       }
     });
 
-    // 터치 슬라이드
     let startX = 0;
     let isTouching = false;
     slides.addEventListener('touchstart', e => {
@@ -296,16 +295,6 @@
       if (diff > 50) nextSlide();
       else if (diff < -50) prevSlide();
       isTouching = false;
-    });
-
-    document.addEventListener('click', function (e) {
-      const sidebar = document.getElementById('sidebar');
-      const toggleBtn = document.querySelector('.menu-toggle');
-      if (sidebar.style.display === 'flex' &&
-          !sidebar.contains(e.target) &&
-          !toggleBtn.contains(e.target)) {
-        sidebar.style.display = 'none';
-      }
     });
 
     updateSlide();
