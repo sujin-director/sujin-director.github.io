@@ -1,75 +1,3 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2025년 제9기 최고위과정 원우수첩</title>
-  <meta name="description" content="링크를 눌러 9기 교육생의 프로필을 확인해보세요.">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: sans-serif;
-      background-color: #fff;
-      color: #000;
-    }
-    .slider {
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
-    .slides {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-      height: 100%;
-    }
-    .slide-wrapper {
-      flex-shrink: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: white;
-    }
-    .slide-wrapper img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-    .buttons {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 10px;
-      z-index: 10;
-    }
-    .buttons button {
-      background: rgba(0,0,0,0.3);
-      color: white;
-      border: none;
-      font-size: 24px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .page-indicator {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.3);
-      padding: 4px 10px;
-      border-radius: 10px;
-      color: white;
-      font-size: 12px;
-      z-index: 10;
-    }
     .menu-toggle {
       position: fixed;
       top: 12px;
@@ -81,6 +9,7 @@
       cursor: pointer;
       border: none;
     }
+
     .sidebar {
       position: fixed;
       top: 0;
@@ -89,15 +18,17 @@
       width: 280px;
       background: #fff;
       box-shadow: 4px 0 12px rgba(0,0,0,0.1);
-      padding: 60px 20px 20px;
+      padding: 60px 20px 20px 20px;
       display: none;
       flex-direction: column;
       z-index: 25;
       overflow-y: auto;
     }
+
     .sidebar .section {
       margin-bottom: 18px;
     }
+
     .sidebar h3 {
       font-size: 16px;
       font-weight: bold;
@@ -105,33 +36,62 @@
       justify-content: space-between;
       align-items: center;
       color: #111;
+      border-left: none;
     }
-    .sidebar input {
-      margin-top: 6px;
-      padding: 8px 10px;
+
+    .sidebar h3 span {
+      font-weight: normal;
+      font-size: 16px;
+    }
+
+    .sidebar button {
+      margin: 4px 0;
+      padding: 8px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      background: #eee;
+      color: #000;
       width: 100%;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .sidebar input[type="text"],
+    .sidebar input[type="number"] {
+      margin: 6px 0 8px;
+      padding: 8px;
+      width: calc(100% - 32px);
       border-radius: 4px;
       border: 1px solid #ccc;
-      font-size: 14px;
+      display: inline-block;
     }
-    .sidebar .input-group {
-      position: relative;
+
+    .sidebar a {
+      text-decoration: none;
+      color: #2196F3;
+      font-weight: bold;
     }
-    .sidebar .input-group .go-button {
-      position: absolute;
-      top: 50%;
-      right: 6px;
-      transform: translateY(-50%);
+
+    .go-btn {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
       font-size: 16px;
-      background: none;
-      border: none;
+      text-align: center;
+      background: #16c60c;
+      color: white;
+      border-radius: 4px;
+      line-height: 24px;
+      margin-left: 4px;
       cursor: pointer;
-      color: green;
+      vertical-align: middle;
     }
   </style>
 </head>
 <body>
   <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+
   <div class="sidebar" id="sidebar">
     <div class="section">
       <h3>| 목차</h3>
@@ -139,24 +99,26 @@
       <button onclick="goToSlide(6)">2. 교육생 명단</button>
       <button onclick="goToSlide(11)">3. 교육생 소개</button>
     </div>
+
     <div class="section">
-      <h3>| 이름 검색</h3>
+      <h3>| 이름 검색 <span>🔍</span></h3>
       <input type="text" id="searchBox" placeholder="이름 입력" oninput="filterMenu()" />
       <div id="searchResults"></div>
     </div>
+
     <div class="section">
       <h3>| 페이지 이동</h3>
-      <div class="input-group">
+      <div style="display: flex; align-items: center;">
         <input type="number" id="pageInput" placeholder="페이지 번호 입력" min="1" max="24" />
-        <button class="go-button" onclick="goToInputPage()">✅</button>
+        <span class="go-btn" onclick="goToInputPage()">✅</span>
       </div>
     </div>
+
     <div class="section">
       <h3>| 공유하기</h3>
       <button onclick="copyBaseURL()">홈 링크 복사</button>
     </div>
   </div>
-
   <div class="slider">
     <div class="slides" id="slides">
       <div class="slide-wrapper"><img src="금융보안원시안1_1.jpg" /></div>
@@ -184,6 +146,7 @@
       <div class="slide-wrapper"><img src="금융보안원시안1_23.jpg" /></div>
       <div class="slide-wrapper"><img src="금융보안원시안1_24.jpg" /></div>
     </div>
+
     <div class="buttons">
       <button onclick="prevSlide()">‹</button>
       <button onclick="nextSlide()">›</button>
@@ -191,97 +154,126 @@
     <div class="page-indicator" id="indicator">1 / 24</div>
   </div>
 <script>
-const slides = document.getElementById('slides');
-const total = 24;
-let current = 1;
-const indicator = document.getElementById('indicator');
+  const slides = document.getElementById('slides');
+  const total = 24;
+  let current = 1;
+  const indicator = document.getElementById('indicator');
 
-function updateSlide() {
-  if (current < 1) current = total;
-  if (current > total) current = 1;
-  slides.style.transform = `translateX(-${(current - 1) * 100}vw)`;
-  indicator.textContent = `${current} / ${total}`;
-}
-function nextSlide() { current++; updateSlide(); }
-function prevSlide() { current--; updateSlide(); }
-function goToSlide(num) { current = num; updateSlide(); toggleSidebar(false); }
-function goToInputPage() {
-  const val = parseInt(document.getElementById('pageInput').value);
-  if (val >= 1 && val <= total) goToSlide(val);
-}
-function toggleSidebar(forceClose = undefined) {
-  const sidebar = document.getElementById('sidebar');
-  if (forceClose === false || sidebar.style.display === 'flex') {
-    sidebar.style.display = 'none';
-  } else {
-    sidebar.style.display = 'flex';
-    document.getElementById('searchBox').value = '';
-    document.getElementById('searchResults').innerHTML = '';
+  const searchIndex = {
+    '강호석': [6, 11], '고재술': [6, 11], '권윤정': [6, 11],
+    '김경주': [6, 12], '김동혁': [6, 12], '김은희': [6, 12],
+    '김정아': [6, 13], '김정원': [6, 13], '김종원': [6, 13],
+    '박병삼': [6, 14], '박영수': [7, 14], '배진석': [7, 14],
+    '서홍원': [7, 15], '손영환': [7, 15], '송영신': [7, 15],
+    '신용철': [7, 16], '심성용': [7, 16], '오상원': [7, 16],
+    '오중효': [7, 17], '윤찬식': [7, 17], '윤태진': [8, 17],
+    '이동준': [8, 18], '이상운': [8, 18], '이주호': [8, 18],
+    '이현아': [8, 19], '장경운': [8, 19], '장만우': [8, 19],
+    '장세원': [8, 20], '전우영': [8, 20], '정기영': [8, 20],
+    '정병석': [9, 21], '정수용': [9, 21], '정용준': [9, 21],
+    '정태영': [9, 22], '정혁주': [9, 22], '현정훈': [9, 22],
+    '황성식': [9, 23], '황의자': [9, 23]
+  };
+
+  function updateSlide() {
+    if (current < 1) current = total;
+    if (current > total) current = 1;
+    slides.style.transform = `translateX(-${(current - 1) * 100}vw)`;
+    indicator.textContent = `${current} / ${total}`;
   }
-}
-function filterMenu() {
-  const input = document.getElementById('searchBox').value.trim();
-  const results = document.getElementById('searchResults');
-  results.innerHTML = '';
-  if (input && searchIndex[input]) {
-    searchIndex[input].forEach(slideNum => {
-      const btn = document.createElement('button');
-      btn.innerText = `${input} - ${slideNum}p 이동`;
-      btn.onclick = () => goToSlide(slideNum);
-      results.appendChild(btn);
-    });
+
+  function nextSlide() {
+    current++;
+    updateSlide();
   }
-}
-function copyBaseURL() {
-  navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
-  alert("홈 링크가 복사되었습니다.");
-}
 
-// 터치 이벤트
-let startX = 0;
-let isTouching = false;
-slides.addEventListener('touchstart', e => {
-  isTouching = true;
-  startX = e.touches[0].clientX;
-});
-slides.addEventListener('touchend', e => {
-  if (!isTouching) return;
-  const endX = e.changedTouches[0].clientX;
-  const diff = startX - endX;
-  if (diff > 50) nextSlide();
-  else if (diff < -50) prevSlide();
-  isTouching = false;
-});
-
-// 외부 클릭 시 사이드바 닫기
-document.addEventListener('click', function (e) {
-  const sidebar = document.getElementById('sidebar');
-  const toggleBtn = document.querySelector('.menu-toggle');
-  if (sidebar.style.display === 'flex' &&
-      !sidebar.contains(e.target) &&
-      !toggleBtn.contains(e.target)) {
-    sidebar.style.display = 'none';
+  function prevSlide() {
+    current--;
+    updateSlide();
   }
-});
 
-// 검색 인덱스
-const searchIndex = {
-  '강호석': [6, 11], '고재술': [6, 11], '권윤정': [6, 11],
-  '김경주': [6, 12], '김동혁': [6, 12], '김은희': [6, 12],
-  '김정아': [6, 13], '김정원': [6, 13], '김종원': [6, 13],
-  '박병삼': [6, 14], '박영수': [7, 14], '배진석': [7, 14],
-  '서홍원': [7, 15], '손영환': [7, 15], '송영신': [7, 15],
-  '신용철': [7, 16], '심성용': [7, 16], '오상원': [7, 16],
-  '오중효': [7, 17], '윤찬식': [7, 17], '윤태진': [8, 17],
-  '이동준': [8, 18], '이상운': [8, 18], '이주호': [8, 18],
-  '이현아': [8, 19], '장경운': [8, 19], '장만우': [8, 19],
-  '장세원': [8, 20], '전우영': [8, 20], '정기영': [8, 20],
-  '정병석': [9, 21], '정수용': [9, 21], '정용준': [9, 21],
-  '정태영': [9, 22], '정혁주': [9, 22], '현정훈': [9, 22],
-  '황성식': [9, 23], '황의자': [9, 23]
-};
+  function goToSlide(num) {
+    current = num;
+    updateSlide();
+    toggleSidebar(false);
+  }
 
-updateSlide();
+  function toggleSidebar(forceClose = undefined) {
+    const sidebar = document.getElementById('sidebar');
+    if (forceClose === false || sidebar.style.display === 'flex') {
+      sidebar.style.display = 'none';
+    } else {
+      sidebar.style.display = 'flex';
+      document.getElementById('searchBox').value = '';
+      document.getElementById('searchResults').innerHTML = '';
+    }
+  }
+
+  function goToInputPage() {
+    const val = parseInt(document.getElementById('pageInput').value);
+    if (val >= 1 && val <= total) {
+      goToSlide(val);
+    }
+  }
+
+  function filterMenu() {
+    const input = document.getElementById('searchBox').value.trim();
+    const results = document.getElementById('searchResults');
+    results.innerHTML = '';
+    if (input && searchIndex[input]) {
+      searchIndex[input].forEach(slideNum => {
+        const btn = document.createElement('button');
+        btn.innerText = `${input} - ${slideNum}p 이동`;
+        btn.onclick = () => goToSlide(slideNum);
+        results.appendChild(btn);
+      });
+    }
+  }
+
+  function copyCurrentURL() {
+    const url = `${window.location.origin}${window.location.pathname}?v=${current}`;
+    navigator.clipboard.writeText(url);
+    alert("현재 페이지 링크가 복사되었습니다.");
+  }
+
+  function copyBaseURL() {
+    navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`);
+    alert("홈 링크가 복사되었습니다.");
+  }
+
+  // ✅ 페이지 입력 체크 아이콘으로 이동
+  document.getElementById('pageInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') goToInputPage();
+  });
+  document.getElementById('pageCheckBtn').addEventListener('click', goToInputPage);
+
+  // 터치 이동 (네이버 인앱 브라우저 포함)
+  let startX = 0;
+  let isTouching = false;
+  document.addEventListener('touchstart', e => {
+    isTouching = true;
+    startX = e.touches[0].clientX;
+  });
+
+  document.addEventListener('touchend', e => {
+    if (!isTouching) return;
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    if (diff > 50) nextSlide();
+    else if (diff < -50) prevSlide();
+    isTouching = false;
+  });
+
+  // 사이드바 외부 클릭 시 닫기
+  document.addEventListener('click', function (e) {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.querySelector('.menu-toggle');
+    if (sidebar.style.display === 'flex' &&
+        !sidebar.contains(e.target) &&
+        !toggleBtn.contains(e.target)) {
+      sidebar.style.display = 'none';
+    }
+  });
+
+  updateSlide();
 </script>
-</body>
-</html>
