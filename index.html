@@ -319,3 +319,14 @@
 </script>
 </body>
 </html>
+document.addEventListener('click', function (e) {
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.querySelector('.menu-toggle');
+
+  // 사이드바가 열려 있고, 클릭한 대상이 사이드바 내부도 아니고, 토글 버튼도 아니면 닫기
+  if (sidebar.style.display === 'flex' &&
+      !sidebar.contains(e.target) &&
+      !toggleBtn.contains(e.target)) {
+    sidebar.style.display = 'none';
+  }
+});
