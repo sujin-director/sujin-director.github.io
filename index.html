@@ -331,30 +331,36 @@
     alert("홈 링크가 복사되었습니다.");
   }
 
-  // ✅ 확대 시에도 터치는 허용하되, 오른쪽 끝에서 시작한 터치만 슬라이드 방지
-  let startX = 0;
-  let isTouching = false;
-  let allowSwipe = true;
+let startX = 0;
+let isTouching = false;
 
-  document.addEventListener('touchstart', e => {
-    if (e.touches.length > 1) return;
-    const touchX = e.touches[0].clientX;
-    const screenWidth = window.innerWidth;
-    allowSwipe = touchX < screenWidth * 0.7;  // 오른쪽 30%는 무시
-    if (e.target.closest('.slides')) {
-      isTouching = true;
-      startX = touchX;
-    }
-  });
+function isZoomedIn() {
+  return document.body.scrollWidth > window.innerWidth + 10;
+}
 
-  document.addEventListener('touchend', e => {
-    if (!isTouching || !allowSwipe) return;
-    const endX = e.changedTouches[0].clientX;
-    const diff = startX - endX;
-    if (diff > 50) nextSlide();
-    else if (diff < -50) prevSlide();
+document.addEventListener('touchstart', e => {
+  if (e.touches.length > 1) return;
+  if (!e.target.closest('.slides')) return;
+
+  isTouching = true;
+  startX = e.touches[0].clientX;
+});
+
+document.addEventListener('touchend', e => {
+  if (!isTouching) return;
+  if (isZoomedIn()) {
     isTouching = false;
-  });
+    return;
+  }
+
+  const endX = e.changedTouches[0].clientX;
+  const diff = startX - endX;
+
+  if (diff > 50) nextSlide();
+  else if (diff < -50) prevSlide();
+
+  isTouching = false;
+});
 
   // 사이드바 외부 클릭 시 닫기
   document.addEventListener('click', function (e) {
