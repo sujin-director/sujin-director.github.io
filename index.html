@@ -279,15 +279,16 @@
     indicator.textContent = `${current} / ${total}`;
   }
 
-  function nextSlide() {
-    current++;
-    updateSlide();
+  function updateSlide() {
+    if (current < 1) current = total;
+    if (current > total) current = 1;
+    slides.style.transition = 'transform 0.5s ease-in-out';
+    slides.style.transform = `translateX(-${(current - 1) * 100}vw)`;
+    indicator.textContent = `${current} / ${total}`;
   }
 
-  function prevSlide() {
-    current--;
-    updateSlide();
-  }
+  function nextSlide() { current++; updateSlide(); }
+  function prevSlide() { current--; updateSlide(); }
 
   function goToSlide(num) {
     current = num;
@@ -297,9 +298,7 @@
 
   function goToInputPage() {
     const val = parseInt(document.getElementById('pageInput').value);
-    if (val >= 1 && val <= total) {
-      goToSlide(val);
-    }
+    if (val >= 1 && val <= total) goToSlide(val);
   }
 
   function toggleSidebar(forceClose = undefined) {
@@ -332,22 +331,24 @@
     alert("홈 링크가 복사되었습니다.");
   }
 
-  // 터치 슬라이드 (줌 상태 예외 처리 포함)
+  // ✅ 확대 시에도 터치는 허용하되, 오른쪽 끝에서 시작한 터치만 슬라이드 방지
   let startX = 0;
   let isTouching = false;
+  let allowSwipe = true;
 
   document.addEventListener('touchstart', e => {
-    if (e.touches.length > 1) return; // 멀티 터치 무시
-    const zoomed = document.body.scrollWidth > window.innerWidth + 10;
-    if (zoomed) return; // 확대 상태면 슬라이드 비활성화
+    if (e.touches.length > 1) return;
+    const touchX = e.touches[0].clientX;
+    const screenWidth = window.innerWidth;
+    allowSwipe = touchX < screenWidth * 0.7;  // 오른쪽 30%는 무시
     if (e.target.closest('.slides')) {
       isTouching = true;
-      startX = e.touches[0].clientX;
+      startX = touchX;
     }
   });
 
   document.addEventListener('touchend', e => {
-    if (!isTouching) return;
+    if (!isTouching || !allowSwipe) return;
     const endX = e.changedTouches[0].clientX;
     const diff = startX - endX;
     if (diff > 50) nextSlide();
