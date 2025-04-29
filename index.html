@@ -359,6 +359,8 @@ document.addEventListener('touchstart', e => {
 
 document.addEventListener('touchend', e => {
   if (!isTouching) return;
+
+  // ✅ 확대 상태일 경우 드래그 거리와 관계없이 슬라이드 전환 금지
   if (isZoomedIn()) {
     isTouching = false;
     return;
