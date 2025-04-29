@@ -333,7 +333,18 @@
 
 let startX = 0;
 let isTouching = false;
+let lastZoomTime = 0;
 
+// 핀치 줌 감지
+document.addEventListener('gesturestart', () => {
+  lastZoomTime = Date.now();
+});
+
+function isZoomedIn() {
+  const zoomed = document.body.scrollWidth > window.innerWidth + 10;
+  const now = Date.now();
+  return zoomed || (now - lastZoomTime < 300);
+}
 function isZoomedIn() {
   return document.body.scrollWidth > window.innerWidth + 10;
 }
