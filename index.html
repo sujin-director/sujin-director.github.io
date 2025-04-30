@@ -183,6 +183,15 @@
   </style>
 </head>
 <body>
+    <script>
+    const correctPassword = "pass2025"; // 👉 원하는 비밀번호 입력
+    const input = prompt("비밀번호를 입력하세요:");
+
+    if (input !== correctPassword) {
+      alert("비밀번호가 틀렸습니다.");
+      document.body.innerHTML = ""; // 페이지 내용 숨김
+    }
+  </script>
   <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
   <button class="home-button" onclick="goToSlide(1)">
     <img src="home.png" alt="홈으로" />
